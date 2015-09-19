@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace MagicTheGathering
 {
@@ -44,7 +46,7 @@ namespace MagicTheGathering
                 landsPlayed = value;
             }
         }
-
+        
         protected List<HandCardReference> Hand
         {
             get
@@ -55,6 +57,25 @@ namespace MagicTheGathering
             private set
             {
                 hand = value;
+            }
+        }
+        public void DrawHand(SpriteBatch spriteBatch, Rectangle rect)
+        {
+            Vector2 handItemSize = new Vector2(75, 100);
+            float spacing = handItemSize.X;
+            if (hand.Count > 1)
+            {
+                float overlapSpacing = (rect.Width - handItemSize.X) / (hand.Count - 1);
+                if (spacing > overlapSpacing)
+                    spacing = overlapSpacing;
+            }
+            float totalWidth = handItemSize.X + spacing * (hand.Count - 1);
+
+            Vector2 currentPos = new Vector2(rect.Left + (rect.Width - totalWidth)*0.5f, rect.Top);
+            foreach (HandCardReference c in hand)
+            {
+                c.Card.Draw(spriteBatch, new Rectangle((int)currentPos.X, (int)currentPos.Y, (int)handItemSize.X, (int)handItemSize.Y));
+                currentPos.X += spacing;
             }
         }
     }
