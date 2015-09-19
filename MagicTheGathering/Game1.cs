@@ -95,6 +95,9 @@ namespace MagicTheGathering
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            player.DrawHand(spriteBatch, new Rectangle(0, GraphicsDevice.Viewport.Height-100, GraphicsDevice.Viewport.Width, 100));
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
