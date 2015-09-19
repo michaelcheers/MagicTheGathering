@@ -16,20 +16,25 @@ namespace MagicTheGathering
             this.deck = deck;
         }
 
+        protected void Play (HandCardReference card)
+        {
+            hand.Remove(card);
+            battlefield.Add(new BattlefieldCardReference(card.Card));
+        }
+
         private void StartGame()
         {
             foreach (var item in deck.DrawTopCard(7))
             {
-                hand.Add(new HandCardReference(item.Card));
+                Hand.Add(new HandCardReference(item.Card));
             }
         }
 
+        List<BattlefieldCardReference> battlefield = new List<BattlefieldCardReference>();
         List<HandCardReference> hand = new List<HandCardReference>();
         MagicGame game;
         Deck deck;
         int landsPlayed = 0;
-
-        public IEnumerable<HandCardReference> Hand { get { return hand; } }
 
         protected int LandsPlayed
         {
@@ -41,6 +46,19 @@ namespace MagicTheGathering
             private set
             {
                 landsPlayed = value;
+            }
+        }
+        
+        public List<HandCardReference> Hand
+        {
+            get
+            {
+                return hand;
+            }
+
+            private set
+            {
+                hand = value;
             }
         }
     }

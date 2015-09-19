@@ -61,7 +61,6 @@ namespace MagicTheGathering
         Player viewingPlayer;
 
         readonly Vector2 handCardSize = new Vector2(75, 100);
-        int handHoverIdx;
         int showingGameState = 0;
 
         Dictionary<CardReference, UICard> gameStateRepresentation = new Dictionary<CardReference, UICard>();

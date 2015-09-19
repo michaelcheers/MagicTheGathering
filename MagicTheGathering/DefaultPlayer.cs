@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +9,8 @@ namespace MagicTheGathering
 {
     class DefaultPlayer : Player
     {
-        public DefaultPlayer (SpriteBatch batch, GraphicsDevice device, MagicGame game, Deck deck) : base (game, deck)
+        public DefaultPlayer (MagicGame game, Deck deck) : base (game, deck)
         {
-
-        }
-        public override void Draw()
-        {
-
         }
     }
 }

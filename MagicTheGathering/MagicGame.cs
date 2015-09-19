@@ -25,5 +25,12 @@ namespace MagicTheGathering
                 item.Update();
             }
         }
+        public void Draw ()
+        {
+            foreach (var item in players)
+            {
+                item.Draw();
+            }
+        }
     }
 }

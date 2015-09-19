@@ -36,7 +36,7 @@ namespace MagicTheGathering
             // TODO: Add your initialization logic here
 
             host = new MagicGame();
-            player = new DefaultPlayer(spriteBatch, GraphicsDevice, host, new TestDeck(LoadCard("Forest", GraphicsDevice)));
+            player = new DefaultPlayer(host, new TestDeck(LoadCard("Forest", GraphicsDevice)));
             host.ReadyGameForStart();
             ui = new MagicUI(player);
 
@@ -63,6 +63,8 @@ namespace MagicTheGathering
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            player = new DefaultPlayer(host, new TestDeck(LoadCard("Island", GraphicsDevice)));
+            host.ReadyGameForStart();
             // TODO: use this.Content to load your game content here
         }
 
@@ -103,6 +105,7 @@ namespace MagicTheGathering
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             ui.Draw(spriteBatch);
+            host.Draw();
             spriteBatch.End();
 
             base.Draw(gameTime);
