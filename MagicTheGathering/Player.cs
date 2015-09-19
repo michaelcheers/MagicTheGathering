@@ -14,11 +14,16 @@ namespace MagicTheGathering
             this.deck = deck;
         }
 
+        protected void Play (HandCardReference card)
+        {
+
+        }
+
         private void StartGame()
         {
             foreach (var item in deck.DrawTopCard(7))
             {
-                hand.Add(new HandCardReference(item.Card));
+                Hand.Add(new HandCardReference(item.Card));
             }
         }
 
@@ -37,6 +42,19 @@ namespace MagicTheGathering
             private set
             {
                 landsPlayed = value;
+            }
+        }
+
+        protected List<HandCardReference> Hand
+        {
+            get
+            {
+                return hand;
+            }
+
+            private set
+            {
+                hand = value;
             }
         }
     }
