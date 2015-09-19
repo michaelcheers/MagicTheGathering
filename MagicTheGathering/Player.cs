@@ -18,7 +18,8 @@ namespace MagicTheGathering
 
         protected void Play (HandCardReference card)
         {
-
+            hand.Remove(card);
+            battlefield.Add(new BattlefieldCardReference(card.Card));
         }
 
         private void StartGame()
@@ -29,6 +30,7 @@ namespace MagicTheGathering
             }
         }
 
+        List<BattlefieldCardReference> battlefield = new List<BattlefieldCardReference>();
         List<HandCardReference> hand = new List<HandCardReference>();
         MagicGame game;
         Deck deck;
