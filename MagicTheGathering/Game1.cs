@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace MagicTheGathering
 {
@@ -11,6 +12,9 @@ namespace MagicTheGathering
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        internal static Dictionary<string, MagicCard> cards = new Dictionary<string, MagicCard>();
+        Player player;
+        MagicGame host;
 
         public Game1()
         {
@@ -28,7 +32,22 @@ namespace MagicTheGathering
         {
             // TODO: Add your initialization logic here
 
+            host = new MagicGame();
+            player = new DefaultPlayer(spriteBatch, GraphicsDevice, host, new TestDeck(LoadCard("Forest", GraphicsDevice)));
+            host.ReadyGameForStart();
+
             base.Initialize();
+        }
+
+        internal static MagicCard LoadCard (string card, GraphicsDevice GraphicsDevice)
+        {
+            if (cards.ContainsKey(card))
+                return cards[card];
+            else
+            {
+                cards.Add(card, new MagicCard(card, GraphicsDevice));
+                return cards[card];
+            }
         }
 
         /// <summary>

@@ -38,9 +38,16 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="NormalDeck.cs" />
+    <Compile Include="Deck.cs" />
+    <Compile Include="MagicCard.cs" />
+    <Compile Include="DefaultPlayer.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="MagicGame.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestDeck.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
