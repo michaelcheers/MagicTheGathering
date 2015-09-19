@@ -7,29 +7,29 @@ namespace MagicTheGathering
 {
     abstract class Deck
     {
-        public abstract MagicCard GetCard(int index);
-        public abstract MagicCard DrawCard(int index);
+        public abstract CardReference GetCard(int index);
+        public abstract CardReference DrawCard(int index);
         public abstract int Length { get; }
-        public virtual MagicCard[] DrawCard(int index, int length)
+        public virtual CardReference[] DrawCard(int index, int length)
         {
-            MagicCard[] result = new MagicCard[length];
+            CardReference[] result = new CardReference[length];
             for (int n = 0; n < length; n++)
             {
                 result[n] = DrawCard(n + index);
             }
             return result;
         }
-        public virtual MagicCard[] DrawTopCard(int length)
+        public virtual CardReference[] DrawTopCard(int length)
         {
-            MagicCard[] result = new MagicCard[length];
+            CardReference[] result = new CardReference[length];
             for (int n = 0; n < length; n++)
             {
                 result[n] = DrawCard(n);
             }
             return result;
         }
-        public virtual MagicCard GetTopCard() { return GetCard(0); }
-        public virtual MagicCard DrawTopCard() { return DrawCard(0); }
+        public virtual CardReference GetTopCard() { return GetCard(0); }
+        public virtual CardReference DrawTopCard() { return DrawCard(0); }
         
     }
 }

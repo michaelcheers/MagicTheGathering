@@ -38,6 +38,9 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CardReference.cs" />
+    <Compile Include="HandCardReference.cs" />
+    <Compile Include="DeckCardReference.cs" />
     <Compile Include="NormalDeck.cs" />
     <Compile Include="Deck.cs" />
     <Compile Include="MagicCard.cs" />

@@ -15,19 +15,19 @@ namespace MagicTheGathering
 
         public NormalDeck (List<MagicCard> deck)
         {
-            this.cards = deck;
+            cards = deck.ConvertAll(DeckCardReference.MakeReference);
         }
 
-        public override MagicCard DrawCard(int index)
+        public override CardReference DrawCard(int index)
         {
-            MagicCard result = GetCard(index);
+            CardReference result = GetCard(index);
             cards.RemoveAt(index);
             return result;
         }
 
-        List<MagicCard> cards;
+        List<DeckCardReference> cards;
 
-        public override MagicCard GetCard(int index)
+        public override CardReference GetCard(int index)
         {
             return cards[index];
         }

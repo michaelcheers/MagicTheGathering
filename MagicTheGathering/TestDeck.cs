@@ -20,14 +20,14 @@ namespace MagicTheGathering
             }
         }
 
-        public override MagicCard DrawCard(int index)
+        public override CardReference DrawCard(int index)
         {
-            return card;
+            return new DeckCardReference(card);
         }
 
-        public override MagicCard GetCard(int index)
+        public override CardReference GetCard(int index)
         {
-            return card;
+            return new DeckCardReference(card);
         }
     }
 }

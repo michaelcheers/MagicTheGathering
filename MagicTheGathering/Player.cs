@@ -16,10 +16,13 @@ namespace MagicTheGathering
 
         private void StartGame()
         {
-            hand = new List<MagicCard>(deck.DrawTopCard(7));
+            foreach (var item in deck.DrawTopCard(7))
+            {
+                hand.Add(new HandCardReference(item.Card));
+            }
         }
 
-        List<MagicCard> hand = new List<MagicCard>();
+        List<HandCardReference> hand = new List<HandCardReference>();
         MagicGame game;
         Deck deck;
         int landsPlayed = 0;
