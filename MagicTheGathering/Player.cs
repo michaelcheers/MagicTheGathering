@@ -16,10 +16,14 @@ namespace MagicTheGathering
             this.deck = deck;
         }
 
-        protected void Play (HandCardReference card)
+        internal void Play (CardReference card)
         {
-            hand.Remove(card);
-            battlefield.Add(new BattlefieldCardReference(card.Card));
+            if (card is HandCardReference)
+            {
+                HandCardReference hcard = (HandCardReference)card;
+                hand.Remove(hcard);
+                battlefield.Add(new BattlefieldCardReference(card.Card));
+            }
         }
 
         private void StartGame()

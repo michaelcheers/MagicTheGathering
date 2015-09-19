@@ -13,7 +13,7 @@ namespace MagicTheGathering
         {
             Rectangle desiredRect;
             Rectangle currentRect;
-            CardReference card;
+            internal readonly CardReference card;
             int currentState;
 
             public bool Active(int state) { return currentState == state; }
@@ -107,19 +107,24 @@ namespace MagicTheGathering
                 if(!hoveredCard.Contains(mousePos))
                     hoveredCard = null;
             }
+            bool hoveredCardMissing = (hoveredCard != null);
 
             foreach (UICard c in gameStateRepresentation.Values)
             {
-                if (hoveredCard == null && c.Contains(mousePos))
-                {
+                if (c == hoveredCard)
+                    hoveredCardMissing = false;
+                else if (hoveredCard == null && c.Contains(mousePos))
                     hoveredCard = c;
-                }
+
                 c.Update(hoveredCard == c);
             }
+
+            if (hoveredCardMissing)
+                hoveredCard = null;
             
             if(hoveredCard != null && inputState.WasMouseLeftJustPressed())
             {
-//                Play(hoveredCard);
+                viewingPlayer.Play(hoveredCard.card);
             }
         }
 
