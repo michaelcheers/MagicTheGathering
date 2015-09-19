@@ -15,11 +15,14 @@ namespace MagicTheGathering
         internal static Dictionary<string, MagicCard> cards = new Dictionary<string, MagicCard>();
         Player player;
         MagicGame host;
+        MagicUI ui;
+        Input.InputState inputState = new Input.InputState();
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            IsMouseVisible = true;
         }
 
         /// <summary>
@@ -35,6 +38,7 @@ namespace MagicTheGathering
             host = new MagicGame();
             player = new DefaultPlayer(spriteBatch, GraphicsDevice, host, new TestDeck(LoadCard("Forest", GraphicsDevice)));
             host.ReadyGameForStart();
+            ui = new MagicUI(player);
 
             base.Initialize();
         }
@@ -82,6 +86,8 @@ namespace MagicTheGathering
                 Exit();
 
             // TODO: Add your update logic here
+            inputState.Update();
+            ui.Update(inputState, GraphicsDevice.Viewport.Bounds);
 
             base.Update(gameTime);
         }
@@ -96,7 +102,7 @@ namespace MagicTheGathering
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            player.DrawHand(spriteBatch, new Rectangle(0, GraphicsDevice.Viewport.Height-100, GraphicsDevice.Viewport.Width, 100));
+            ui.Draw(spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);
