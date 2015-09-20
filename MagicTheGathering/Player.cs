@@ -22,7 +22,7 @@ namespace MagicTheGathering
             {
                 HandCardReference hcard = (HandCardReference)card;
                 hand.Remove(hcard);
-                battlefield.Add(new BattlefieldCardReference(card.Card));
+                battlefield.Add(new BattlefieldCardReference(card));
             }
         }
 
@@ -30,7 +30,7 @@ namespace MagicTheGathering
         {
             foreach (var item in deck.DrawTopCard(7))
             {
-                Hand.Add(new HandCardReference(item.Card));
+                Hand.Add(new HandCardReference(item));
             }
         }
 
@@ -65,5 +65,19 @@ namespace MagicTheGathering
                 hand = value;
             }
         }
+
+        public List<BattlefieldCardReference> Battlefield
+        {
+            get
+            {
+                return battlefield;
+            }
+
+            private set
+            {
+                battlefield = value;
+            }
+        }
+
     }
 }

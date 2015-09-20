@@ -7,7 +7,7 @@ namespace MagicTheGathering
 {
     class HandCardReference : CardReference
     {
-        internal HandCardReference(MagicCard card) : base(card)
+        internal HandCardReference(CardReference card) : base(card)
         {
         }
 

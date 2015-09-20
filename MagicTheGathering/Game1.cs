@@ -36,9 +36,6 @@ namespace MagicTheGathering
             // TODO: Add your initialization logic here
 
             host = new MagicGame();
-            player = new DefaultPlayer(host, new TestDeck(LoadCard("Forest", GraphicsDevice)));
-            host.ReadyGameForStart();
-            ui = new MagicUI(player);
 
             base.Initialize();
         }
@@ -64,6 +61,7 @@ namespace MagicTheGathering
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             player = new DefaultPlayer(host, new TestDeck(LoadCard("Island", GraphicsDevice)));
+            ui = new MagicUI(player);
             host.ReadyGameForStart();
             // TODO: use this.Content to load your game content here
         }

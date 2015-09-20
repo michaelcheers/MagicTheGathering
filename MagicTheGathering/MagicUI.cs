@@ -13,7 +13,7 @@ namespace MagicTheGathering
         {
             Rectangle desiredRect;
             Rectangle currentRect;
-            internal readonly CardReference card;
+            internal CardReference card;
             int currentState;
 
             public bool Active(int state) { return currentState == state; }
@@ -41,10 +41,10 @@ namespace MagicTheGathering
 
             public void Update(bool hovered)
             {
-                if(hovered)
+                if (hovered)
                 {
-                    int HOVER_BULGE = 10;
-                    currentRect = new Rectangle(desiredRect.X- HOVER_BULGE, desiredRect.Y-HOVER_BULGE, desiredRect.Width+HOVER_BULGE*2, desiredRect.Height+HOVER_BULGE*2);
+                    int HOVER_BULGE = desiredRect.Height/10;
+                    currentRect = new Rectangle(desiredRect.X - HOVER_BULGE, desiredRect.Y - HOVER_BULGE, desiredRect.Width + HOVER_BULGE * 2, desiredRect.Height + HOVER_BULGE * 2);
                 }
                 else
                 {
@@ -61,9 +61,11 @@ namespace MagicTheGathering
         Player viewingPlayer;
 
         readonly Vector2 handCardSize = new Vector2(75, 100);
+        readonly Vector2 battlefieldCardSize = new Vector2(60, 80);
+        readonly Vector2 battlefieldSpacing = new Vector2(5, 10);
         int showingGameState = 0;
 
-        Dictionary<CardReference, UICard> gameStateRepresentation = new Dictionary<CardReference, UICard>();
+        Dictionary<CardReference.CardID, UICard> gameStateRepresentation = new Dictionary<CardReference.CardID, UICard>();
         UICard hoveredCard;
 
         public MagicUI(Player viewingPlayer)
@@ -75,36 +77,46 @@ namespace MagicTheGathering
         {
             showingGameState++;
 
-            IEnumerable<HandCardReference> hand = viewingPlayer.Hand;
-            foreach (HandCardReference c in hand)
-            {
-                if (!gameStateRepresentation.ContainsKey(c))
-                {
-                    gameStateRepresentation[c] = new UICard(c, showingGameState);
-                }
-                else
-                {
-                    gameStateRepresentation[c].SetGameState(showingGameState);
-                }
-            }
+            RefreshCards(viewingPlayer.Hand);
+            RefreshCards(viewingPlayer.Battlefield);
 
+            // remove the ones that didn't get refreshed
             foreach (var kv in gameStateRepresentation.Where(kv => !kv.Value.Active(showingGameState)).ToList())
             {
                 gameStateRepresentation.Remove(kv.Key);
             }
         }
 
+        public void RefreshCards(IEnumerable<CardReference> cards)
+        {
+            foreach (CardReference c in cards)
+            {
+                if (!gameStateRepresentation.ContainsKey(c.cardID))
+                {
+                    gameStateRepresentation[c.cardID] = new UICard(c, showingGameState);
+                }
+                else
+                {
+                    UICard uiCard = gameStateRepresentation[c.cardID];
+                    uiCard.card = c;
+                    uiCard.SetGameState(showingGameState);
+                }
+            }
+        }
+
         public void Update(Input.InputState inputState, Rectangle screenSize)
         {
-            // for now, let's refresh it every frame
+            // for now, let's refresh the state every frame
             NewGameState();
 
-            LayOutHand(new Rectangle(0, screenSize.Height - 100, screenSize.Width, 100), viewingPlayer.Hand);
+            LayOutArea(new Rectangle(0, screenSize.Height - 100, screenSize.Width, 100), viewingPlayer.Hand, handCardSize, 0);
+            int battlefieldHeight = (screenSize.Height - 130) / 2;
+            LayOutBattlefield(new Rectangle(0, battlefieldHeight, screenSize.Width, battlefieldHeight), viewingPlayer.Battlefield);
 
             Vector2 mousePos = inputState.MousePos;
             if (hoveredCard != null)
             {
-                if(!hoveredCard.Contains(mousePos))
+                if (!hoveredCard.Contains(mousePos))
                     hoveredCard = null;
             }
             bool hoveredCardMissing = (hoveredCard != null);
@@ -121,8 +133,8 @@ namespace MagicTheGathering
 
             if (hoveredCardMissing)
                 hoveredCard = null;
-            
-            if(hoveredCard != null && inputState.WasMouseLeftJustPressed())
+
+            if (hoveredCard != null && inputState.WasMouseLeftJustPressed())
             {
                 viewingPlayer.Play(hoveredCard.card);
             }
@@ -136,26 +148,61 @@ namespace MagicTheGathering
             }
         }
 
-        void LayOutHand(Rectangle bounds, IEnumerable<CardReference> hand)
+        void LayOutArea(Rectangle bounds, IEnumerable<CardReference> cards, Vector2 cardSize, float cardSpacing)
         {
-            float handSpacing = handCardSize.X;
-            int numCards = hand.Count();
+            float actualSpacing = cardSize.X + cardSpacing;
+            int numCards = cards.Count();
             if (numCards > 1)
             {
-                float overlapSpacing = (bounds.Width - handCardSize.X) / (numCards - 1);
-                if (handSpacing > overlapSpacing)
-                    handSpacing = overlapSpacing;
+                float overlapSpacing = (bounds.Width - cardSize.X) / (numCards - 1);
+                if (actualSpacing > overlapSpacing)
+                    actualSpacing = overlapSpacing;
             }
-            float totalWidth = handCardSize.X + handSpacing * (numCards - 1);
+            float totalWidth = cardSize.X + actualSpacing * (numCards - 1);
 
-            Vector2 handStartPos = new Vector2(bounds.Left + (bounds.Width - totalWidth) * 0.5f, bounds.Top);
-            int handIdx = 0;
-            foreach (CardReference c in hand)
+            Vector2 layoutStartPos = new Vector2(bounds.Left + (bounds.Width - totalWidth) * 0.5f, bounds.Top);
+            int cardIdx = 0;
+            foreach (CardReference c in cards)
             {
-                Rectangle rect = new Rectangle((int)(handStartPos.X + (handSpacing * handIdx)), (int)handStartPos.Y, (int)handCardSize.X, (int)handCardSize.Y);
-                gameStateRepresentation[c].SetDesiredPos(new Rectangle((int)(handStartPos.X+(handSpacing*handIdx)), (int)handStartPos.Y, (int)handCardSize.X, (int)handCardSize.Y));
-                handIdx++;
+                Rectangle rect = new Rectangle((int)(layoutStartPos.X + (actualSpacing * cardIdx)), (int)layoutStartPos.Y, (int)cardSize.X, (int)cardSize.Y);
+                gameStateRepresentation[c.cardID].SetDesiredPos(new Rectangle((int)(layoutStartPos.X + (actualSpacing * cardIdx)), (int)layoutStartPos.Y, (int)cardSize.X, (int)cardSize.Y));
+                cardIdx++;
             }
+        }
+
+        void LayOutBattlefield(Rectangle bounds, IEnumerable<CardReference> permanents)
+        {
+            List<CardReference> lands = new List<CardReference>();
+            List<CardReference> creatures = new List<CardReference>();
+            List<CardReference> miscPermanents = new List<CardReference>();
+            /*            foreach (CardReference c in permanents)
+                        {
+                            if(c.isCreature)
+                                creatures.Add(c);
+                            else if(c.isLand)
+                                lands.Add(c);
+                            else
+                                miscPermanents.Add(c);
+                        }*/
+            lands.AddRange(permanents);
+
+            float battlefieldScale = 1.0f;
+            float battlefieldNeededHeight = battlefieldCardSize.Y * 2 + battlefieldSpacing.Y;
+            if (bounds.Height < battlefieldNeededHeight)
+            {
+                battlefieldScale = bounds.Height / battlefieldNeededHeight;
+            }
+
+            LayOutArea(new Rectangle(bounds.Left, (int)(bounds.Bottom - battlefieldCardSize.Y), bounds.Width, (int)battlefieldCardSize.Y), lands, battlefieldCardSize, battlefieldSpacing.X);
+
+/*                Vector2 battlefieldStartPos = new Vector2(bounds.Left + (bounds.Width - totalWidth) * 0.5f, bounds.Top);
+            int cardIdx = 0;
+            foreach (CardReference c in permanents)
+            {
+                Rectangle rect = new Rectangle((int)(battlefieldStartPos.X + (handSpacing * handIdx)), (int)handStartPos.Y, (int)handCardSize.X, (int)handCardSize.Y);
+                gameStateRepresentation[c.cardID].SetDesiredPos(new Rectangle((int)(handStartPos.X + (handSpacing * handIdx)), (int)handStartPos.Y, (int)handCardSize.X, (int)handCardSize.Y));
+                handIdx++;
+            }*/
         }
     }
 }
