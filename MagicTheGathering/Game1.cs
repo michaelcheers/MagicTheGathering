@@ -1,7 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Json_Reader;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 
 namespace MagicTheGathering
 {
@@ -14,6 +18,7 @@ namespace MagicTheGathering
         SpriteBatch spriteBatch;
         internal static Dictionary<string, MagicCard> cards = new Dictionary<string, MagicCard>();
         Player player;
+        JSONTable table;
         MagicGame host;
 
         public Game1()
@@ -32,18 +37,26 @@ namespace MagicTheGathering
         {
             // TODO: Add your initialization logic here
 
+            Assembly current = Assembly.GetExecutingAssembly();
+            table = JSONTable.parse(new StreamReader(current.GetManifestResourceStream("MagicTheGathering.AllCards.json")).ReadToEnd());
             host = new MagicGame();
 
             base.Initialize();
         }
 
-        internal static MagicCard LoadCard (string card, GraphicsDevice GraphicsDevice)
+        internal static MagicCard LoadCard (string card, GraphicsDevice GraphicsDevice, JSONTable table)
         {
             if (cards.ContainsKey(card))
                 return cards[card];
             else
             {
-                cards.Add(card, new MagicCard(card, GraphicsDevice));
+                JSONTable cardTable = table.getJSON(card);
+                MagicCardType type = (MagicCardType)0;
+                foreach (var item in cardTable.getArray("types").toStringArray())
+                {
+                    type |= (MagicCardType)Enum.Parse(typeof(MagicCardType), item);
+                }
+                cards.Add(card, new MagicCard(card, GraphicsDevice, type));
                 return cards[card];
             }
         }
@@ -57,7 +70,7 @@ namespace MagicTheGathering
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            player = new DefaultPlayer(spriteBatch, GraphicsDevice, host, new TestDeck(LoadCard("Island", GraphicsDevice)));
+            player = new DefaultPlayer(spriteBatch, GraphicsDevice, host, new TestDeck(LoadCard("Island", GraphicsDevice, table)));
             host.ReadyGameForStart();
             // TODO: use this.Content to load your game content here
         }
