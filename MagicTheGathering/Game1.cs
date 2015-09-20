@@ -73,7 +73,7 @@ namespace MagicTheGathering
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            player = new DefaultPlayer(host, new TestDeck(LoadCard("Island", GraphicsDevice, table)));
+            player = new DefaultPlayer(host, new TestDeck(LoadCard("Air Elemental", GraphicsDevice, table)));
             ui = new MagicUI(player);
             host.ReadyGameForStart();
             // TODO: use this.Content to load your game content here

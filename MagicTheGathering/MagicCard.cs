@@ -14,7 +14,7 @@ namespace MagicTheGathering
         {
             this.type = type;
             this.name = name;
-            texture = Texture2D.FromStream(GraphicsDevice, File.OpenRead("Cards/" + name + ".jpg"));
+            texture = Texture2D.FromStream(GraphicsDevice, File.OpenRead("Cards/" + name + ".png"));
         }
 
         internal MagicCardType Type

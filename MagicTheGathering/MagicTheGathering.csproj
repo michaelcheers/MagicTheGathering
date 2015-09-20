@@ -69,19 +69,22 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AllCards.json" />
-    <None Include="Cards\Forest.jpg">
+    <None Include="Cards\Air Elemental.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Cards\Island.jpg">
+    <None Include="Cards\Forest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Cards\Mountain.jpg">
+    <None Include="Cards\Island.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Cards\Plains.jpg">
+    <None Include="Cards\Mountain.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Cards\Swamp.jpg">
+    <None Include="Cards\Plains.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Cards\Swamp.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="Icon.ico" />
