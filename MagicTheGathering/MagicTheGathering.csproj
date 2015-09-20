@@ -42,6 +42,8 @@
     <Compile Include="CardReference.cs" />
     <Compile Include="HandCardReference.cs" />
     <Compile Include="DeckCardReference.cs" />
+    <Compile Include="InputState.cs" />
+    <Compile Include="MagicUI.cs" />
     <Compile Include="MagicCardType.cs" />
     <Compile Include="NormalDeck.cs" />
     <Compile Include="Deck.cs" />

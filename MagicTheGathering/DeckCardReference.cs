@@ -7,7 +7,11 @@ namespace MagicTheGathering
 {
     class DeckCardReference : CardReference
     {
-        internal DeckCardReference(MagicCard card) : base(card)
+        internal DeckCardReference(CardReference card) : base(card)
+        {
+        }
+
+        internal DeckCardReference(MagicCard card) : base(card, new CardID()) // this is where new IDs are born
         {
         }
 

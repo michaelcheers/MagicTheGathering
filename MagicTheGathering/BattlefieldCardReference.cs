@@ -7,7 +7,7 @@ namespace MagicTheGathering
 {
     class BattlefieldCardReference : CardReference
     {
-        internal BattlefieldCardReference(MagicCard card) : base(card)
+        internal BattlefieldCardReference(CardReference card) : base(card)
         {
         }
 

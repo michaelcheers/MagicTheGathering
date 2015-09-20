@@ -20,11 +20,14 @@ namespace MagicTheGathering
         Player player;
         JSONTable table;
         MagicGame host;
+        MagicUI ui;
+        Input.InputState inputState = new Input.InputState();
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            IsMouseVisible = true;
         }
 
         /// <summary>
@@ -70,7 +73,8 @@ namespace MagicTheGathering
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            player = new DefaultPlayer(spriteBatch, GraphicsDevice, host, new TestDeck(LoadCard("Island", GraphicsDevice, table)));
+            player = new DefaultPlayer(host, new TestDeck(LoadCard("Island", GraphicsDevice, table)));
+            ui = new MagicUI(player);
             host.ReadyGameForStart();
             // TODO: use this.Content to load your game content here
         }
@@ -95,6 +99,8 @@ namespace MagicTheGathering
                 Exit();
 
             // TODO: Add your update logic here
+            inputState.Update();
+            ui.Update(inputState, GraphicsDevice.Viewport.Bounds);
 
             base.Update(gameTime);
         }
@@ -109,6 +115,7 @@ namespace MagicTheGathering
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+            ui.Draw(spriteBatch);
             host.Draw();
             spriteBatch.End();
 
