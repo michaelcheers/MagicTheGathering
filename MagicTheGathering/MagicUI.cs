@@ -11,10 +11,14 @@ namespace MagicTheGathering
     {
         class UICard
         {
-            Rectangle desiredRect;
+            Rectangle animTargetRect;
+            Rectangle animStartRect;
             Rectangle currentRect;
+            bool hovered;
             internal CardReference card;
             int currentState;
+            const int animDuration = 15;
+            int animCurrentFrame;
 
             public bool Active(int state) { return currentState == state; }
 
@@ -31,7 +35,12 @@ namespace MagicTheGathering
 
             public void SetDesiredPos(Rectangle rect)
             {
-                this.desiredRect = rect;
+                if(this.animTargetRect != rect)
+                {
+                    this.animTargetRect = rect;
+                    this.animStartRect = this.currentRect;
+                    this.animCurrentFrame = 0;
+                }
             }
 
             public bool Contains(Vector2 pos)
@@ -41,20 +50,54 @@ namespace MagicTheGathering
 
             public void Update(bool hovered)
             {
-                if (hovered)
+                this.hovered = hovered;
+
+                if (animCurrentFrame < animDuration)
                 {
-                    int HOVER_BULGE = desiredRect.Height/10;
-                    currentRect = new Rectangle(desiredRect.X - HOVER_BULGE, desiredRect.Y - HOVER_BULGE, desiredRect.Width + HOVER_BULGE * 2, desiredRect.Height + HOVER_BULGE * 2);
+                    animCurrentFrame++;
+                    if (animCurrentFrame == animDuration)
+                    {
+                        currentRect = animTargetRect;
+                    }
+                    else
+                    {
+                        float fraction = (float)animCurrentFrame / animDuration;
+
+                        currentRect = new Rectangle(
+                            Lerp(animStartRect.X, animTargetRect.X, fraction),
+                            Lerp(animStartRect.Y, animTargetRect.Y, fraction),
+                            Lerp(animStartRect.Width, animTargetRect.Width, fraction),
+                            Lerp(animStartRect.Height, animTargetRect.Height, fraction)
+                        );
+                    }
                 }
-                else
-                {
-                    currentRect = desiredRect;
-                }
+            }
+
+            public int Lerp(int a, int b, float fraction)
+            {
+                return (int)(a + fraction * (b-a));
             }
 
             public void Draw(SpriteBatch spriteBatch)
             {
-                card.card.Draw(spriteBatch, currentRect);
+                if (hovered)
+                {
+                    if (card.Location == CardReference.CardLocation.Hand)
+                    {
+                        int HOVER_BULGE = animTargetRect.Height / 10;
+                        Rectangle bulgeRect = new Rectangle(currentRect.X - HOVER_BULGE, currentRect.Y - HOVER_BULGE, currentRect.Width + HOVER_BULGE * 2, currentRect.Height + HOVER_BULGE * 2);
+                        card.card.Draw(spriteBatch, bulgeRect);
+                    }
+                    else
+                    {
+                        card.card.Draw(spriteBatch, currentRect);
+                        // TODO: highlight glow
+                    }
+                }
+                else
+                {
+                    card.card.Draw(spriteBatch, currentRect);
+                }
             }
         }
 
