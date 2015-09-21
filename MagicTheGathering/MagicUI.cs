@@ -179,7 +179,8 @@ namespace MagicTheGathering
 
             if (hoveredCard != null && inputState.WasMouseLeftJustPressed())
             {
-                viewingPlayer.Play((HandCardReference)hoveredCard.card);
+                if (hoveredCard.card is HandCardReference)
+                    viewingPlayer.Play((HandCardReference)hoveredCard.card);
             }
         }
 

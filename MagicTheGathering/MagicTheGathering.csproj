@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="BattlefieldCardReference.cs" />
     <Compile Include="CardReference.cs" />
+    <Compile Include="Extension.cs" />
     <Compile Include="HandCardReference.cs" />
     <Compile Include="DeckCardReference.cs" />
     <Compile Include="InputState.cs" />
@@ -85,6 +86,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Cards\Swamp.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Cards\Catacomb Slug.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="Icon.ico" />
