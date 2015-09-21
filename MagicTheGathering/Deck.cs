@@ -15,7 +15,7 @@ namespace MagicTheGathering
             CardReference[] result = new CardReference[length];
             for (int n = 0; n < length; n++)
             {
-                result[n] = DrawCard(n + index);
+                result[n] = DrawCard(index);
             }
             return result;
         }
@@ -24,7 +24,7 @@ namespace MagicTheGathering
             CardReference[] result = new CardReference[length];
             for (int n = 0; n < length; n++)
             {
-                result[n] = DrawCard(n);
+                result[n] = DrawCard(0);
             }
             return result;
         }
