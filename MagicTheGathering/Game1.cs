@@ -1,5 +1,4 @@
-﻿using Json_Reader;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -77,7 +76,7 @@ namespace MagicTheGathering
             list.Shuffle();
             Deck deck = new NormalDeck(list);
             player = new DefaultPlayer(host, deck);
-            ui = new MagicUI(player);
+            ui = new MagicUI(player, Content, GraphicsDevice);
             host.ReadyGameForStart();
             // TODO: use this.Content to load your game content here
         }
