@@ -28,6 +28,7 @@ namespace MagicTheGathering
         public readonly Color textColor;
         public readonly Texture2D texture;
         public readonly Color fillColor;
+        public readonly Vector2 textOffset;
 
         public UIButtonStyle(SpriteFont font, Color textColor, Texture2D texture, Color fillColor)
         {
@@ -37,13 +38,23 @@ namespace MagicTheGathering
             this.fillColor = fillColor;
         }
 
+        public UIButtonStyle(SpriteFont font, Color textColor, Texture2D texture, Color fillColor, Vector2 textOffset)
+        {
+            this.font = font;
+            this.textColor = textColor;
+            this.texture = texture;
+            this.fillColor = fillColor;
+            this.textOffset = textOffset;
+        }
+
         public void Draw(SpriteBatch spriteBatch, string label, Rectangle frame)
         {
-            spriteBatch.Draw(texture, frame, fillColor);
+            MagicUI.Draw9Grid(spriteBatch, texture, frame, fillColor);
+//            spriteBatch.Draw(texture, frame, fillColor);
             if (font != null)
             {
                 Vector2 labelSize = font.MeasureString(label);
-                spriteBatch.DrawString(font, label, new Vector2(frame.Center.X - labelSize.X / 2, frame.Center.Y - labelSize.Y / 2), textColor);
+                spriteBatch.DrawString(font, label, new Vector2(frame.Center.X + textOffset.X - labelSize.X / 2, frame.Center.Y + textOffset.Y - labelSize.Y / 2), textColor);
             }
         }
     }

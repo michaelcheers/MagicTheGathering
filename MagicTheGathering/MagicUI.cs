@@ -121,14 +121,14 @@ namespace MagicTheGathering
 
             SpriteFont font = content.Load<SpriteFont>("Font");
 
-            Texture2D normalButtonTexture = Texture2D.FromStream(device, File.OpenRead("Cards/Forest.png"));
-            Texture2D hoverButtonTexture = Texture2D.FromStream(device, File.OpenRead("Cards/Mountain.png"));
-            Texture2D pressButtonTexture = Texture2D.FromStream(device, File.OpenRead("Cards/Island.png"));
+            Texture2D normalButtonTexture = Texture2D.FromStream(device, File.OpenRead("Content/button3d.png"));
+            Texture2D hoverButtonTexture = Texture2D.FromStream(device, File.OpenRead("Content/button3d_hover.png"));
+            Texture2D pressButtonTexture = Texture2D.FromStream(device, File.OpenRead("Content/button3d_pressed.png"));
 
             basicButtonStyle = new UIButtonStyleSet(
                 new UIButtonStyle(font, Color.Black, normalButtonTexture, Color.White),
-                new UIButtonStyle(font, Color.Orange, hoverButtonTexture, Color.White),
-                new UIButtonStyle(font, Color.Orange, pressButtonTexture, Color.White)
+                new UIButtonStyle(font, Color.Yellow, hoverButtonTexture, Color.White),
+                new UIButtonStyle(font, Color.Yellow, pressButtonTexture, Color.White, new Vector2(0,1))
             );
 
             buttons = new List<UIButton>() { new UIButton("Continue", new Rectangle(10, 10, 100, 50), basicButtonStyle, OnPressContinue) };
@@ -280,6 +280,29 @@ namespace MagicTheGathering
                 gameStateRepresentation[c.cardID].SetDesiredPos(new Rectangle((int)(handStartPos.X + (handSpacing * handIdx)), (int)handStartPos.Y, (int)handCardSize.X, (int)handCardSize.Y));
                 handIdx++;
             }*/
+        }
+
+        public static void Draw9Grid(SpriteBatch spriteBatch, Texture2D texture, Rectangle rect, Color color)
+        {
+            Point cornerSize = new Point(Math.Min(rect.Width,texture.Width) / 2, Math.Min(rect.Height, texture.Height) / 2);
+            //top left
+            spriteBatch.Draw(texture, new Rectangle(rect.X, rect.Y, cornerSize.X, cornerSize.Y), new Rectangle(0,0,cornerSize.X,cornerSize.Y), color);
+            //top right
+            spriteBatch.Draw(texture, new Rectangle(rect.Right-cornerSize.X, rect.Y, cornerSize.X, cornerSize.Y), new Rectangle(texture.Width-cornerSize.X, 0, cornerSize.X, cornerSize.Y), color);
+            //bottom left
+            spriteBatch.Draw(texture, new Rectangle(rect.X, rect.Bottom - cornerSize.Y, cornerSize.X, cornerSize.Y), new Rectangle(0, texture.Height - cornerSize.Y, cornerSize.X, cornerSize.Y), color);
+            //bottom right
+            spriteBatch.Draw(texture, new Rectangle(rect.Right - cornerSize.X, rect.Bottom-cornerSize.Y, cornerSize.X, cornerSize.Y), new Rectangle(texture.Width - cornerSize.X, texture.Height-cornerSize.Y, cornerSize.X, cornerSize.Y), color);
+            // top
+            spriteBatch.Draw(texture, new Rectangle(rect.X + cornerSize.X, rect.Y, rect.Width - cornerSize.X * 2, cornerSize.Y), new Rectangle(cornerSize.X, 0, 0, cornerSize.Y), color);
+            // bottom
+            spriteBatch.Draw(texture, new Rectangle(rect.X + cornerSize.X, rect.Bottom-cornerSize.Y, rect.Width - cornerSize.X * 2, cornerSize.Y), new Rectangle(cornerSize.X, texture.Height-cornerSize.Y, 0, cornerSize.Y), color);
+            // left
+            spriteBatch.Draw(texture, new Rectangle(rect.X, rect.Y+cornerSize.Y, cornerSize.X,rect.Height-cornerSize.Y*2), new Rectangle(0, cornerSize.Y, cornerSize.X, 0), color);
+            // right
+            spriteBatch.Draw(texture, new Rectangle(rect.Right-cornerSize.X, rect.Y + cornerSize.Y, cornerSize.X, rect.Height - cornerSize.Y * 2), new Rectangle(texture.Width-cornerSize.X, cornerSize.Y, cornerSize.X, 0), color);
+            // middle
+            spriteBatch.Draw(texture, new Rectangle(rect.X + cornerSize.X, rect.Y + cornerSize.Y, rect.Width - cornerSize.X * 2, rect.Height - cornerSize.Y * 2), new Rectangle(cornerSize.X, cornerSize.Y, 0, 0), color);
         }
     }
 }
