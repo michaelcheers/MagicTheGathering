@@ -26,6 +26,8 @@ namespace MagicTheGathering
             }
         }
 
+        List<Ability> abilities;
+
         public abstract CardLocation Location
         {
             get;

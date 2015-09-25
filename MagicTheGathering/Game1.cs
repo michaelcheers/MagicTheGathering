@@ -78,6 +78,7 @@ namespace MagicTheGathering
             Deck deck = new NormalDeck(list);
             player = new DefaultPlayer(host, deck);
             ui = new MagicUI(player);
+            //var player = new TestPlayer(host, deck);
             host.ReadyGameForStart();
             // TODO: use this.Content to load your game content here
         }

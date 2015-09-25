@@ -38,6 +38,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Ability.cs" />
     <Compile Include="BattlefieldCardReference.cs" />
     <Compile Include="CardReference.cs" />
     <Compile Include="Extension.cs" />
@@ -46,6 +47,8 @@
     <Compile Include="InputState.cs" />
     <Compile Include="MagicUI.cs" />
     <Compile Include="MagicCardType.cs" />
+    <Compile Include="ManaCost.cs" />
+    <Compile Include="ManaPool.cs" />
     <Compile Include="NormalDeck.cs" />
     <Compile Include="Deck.cs" />
     <Compile Include="MagicCard.cs" />
