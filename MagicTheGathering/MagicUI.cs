@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -25,21 +27,21 @@ namespace MagicTheGathering
             public UICard(CardReference card, int showingGameState)
             {
                 this.card = card;
-                this.currentState = showingGameState;
+                currentState = showingGameState;
             }
 
             public void SetGameState(int newState)
             {
-                this.currentState = newState;
+                currentState = newState;
             }
 
             public void SetDesiredPos(Rectangle rect)
             {
-                if(this.animTargetRect != rect)
+                if(animTargetRect != rect)
                 {
-                    this.animTargetRect = rect;
-                    this.animStartRect = this.currentRect;
-                    this.animCurrentFrame = 0;
+                    animTargetRect = rect;
+                    animStartRect = currentRect;
+                    animCurrentFrame = 0;
                 }
             }
 
@@ -102,6 +104,8 @@ namespace MagicTheGathering
         }
 
         Player viewingPlayer;
+        List<UIButton> buttons;
+        UIButtonStyleSet basicButtonStyle;
 
         readonly Vector2 handCardSize = new Vector2(75, 100);
         readonly Vector2 battlefieldCardSize = new Vector2(60, 80);
@@ -111,9 +115,28 @@ namespace MagicTheGathering
         Dictionary<CardReference.CardID, UICard> gameStateRepresentation = new Dictionary<CardReference.CardID, UICard>();
         UICard hoveredCard;
 
-        public MagicUI(Player viewingPlayer)
+        public MagicUI(Player viewingPlayer, ContentManager content, GraphicsDevice device)
         {
             this.viewingPlayer = viewingPlayer;
+
+            SpriteFont font = content.Load<SpriteFont>("Font");
+
+            Texture2D normalButtonTexture = Texture2D.FromStream(device, File.OpenRead("Cards/Forest.png"));
+            Texture2D hoverButtonTexture = Texture2D.FromStream(device, File.OpenRead("Cards/Mountain.png"));
+            Texture2D pressButtonTexture = Texture2D.FromStream(device, File.OpenRead("Cards/Island.png"));
+
+            basicButtonStyle = new UIButtonStyleSet(
+                new UIButtonStyle(font, Color.Black, normalButtonTexture, Color.White),
+                new UIButtonStyle(font, Color.Orange, hoverButtonTexture, Color.White),
+                new UIButtonStyle(font, Color.Orange, pressButtonTexture, Color.White)
+            );
+
+            buttons = new List<UIButton>() { new UIButton("Continue", new Rectangle(10, 10, 100, 50), basicButtonStyle, OnPressContinue) };
+        }
+
+        public void OnPressContinue()
+        {
+            viewingPlayer.ContinueToNextPhase();
         }
 
         public void NewGameState()
@@ -182,6 +205,11 @@ namespace MagicTheGathering
                 if (hoveredCard.card is HandCardReference)
                     viewingPlayer.Play((HandCardReference)hoveredCard.card);
             }
+
+            foreach(UIButton button in buttons)
+            {
+                button.Update(inputState);
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -189,6 +217,11 @@ namespace MagicTheGathering
             foreach (UICard c in gameStateRepresentation.Values)
             {
                 c.Draw(spriteBatch);
+            }
+
+            foreach (UIButton button in buttons)
+            {
+                button.Draw(spriteBatch);
             }
         }
 

@@ -1,5 +1,4 @@
-﻿using Json_Reader;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -73,12 +72,11 @@ namespace MagicTheGathering
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            List<MagicCard> list = new List<MagicCard>() { LoadCard("Catacomb Slug", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Swamp", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Forest", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Mountain", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Forest", GraphicsDevice, table) };
+            List<MagicCard> list = new List<MagicCard>() { LoadCard("Catacomb Slug", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Swamp", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Plains", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Swamp", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Plains", GraphicsDevice, table) };
             list.Shuffle();
             Deck deck = new NormalDeck(list);
             player = new DefaultPlayer(host, deck);
-            ui = new MagicUI(player);
-            //var player = new TestPlayer(host, deck);
+            ui = new MagicUI(player, Content, GraphicsDevice);
             host.ReadyGameForStart();
             // TODO: use this.Content to load your game content here
         }

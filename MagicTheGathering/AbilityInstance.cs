@@ -7,5 +7,6 @@ namespace MagicTheGathering
 {
     class AbilityInstance
     {
+        Ability ability;
     }
 }

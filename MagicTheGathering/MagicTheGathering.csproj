@@ -39,12 +39,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Ability.cs" />
+    <Compile Include="AbilityInstance.cs" />
     <Compile Include="BattlefieldCardReference.cs" />
     <Compile Include="CardReference.cs" />
     <Compile Include="Extension.cs" />
     <Compile Include="HandCardReference.cs" />
     <Compile Include="DeckCardReference.cs" />
     <Compile Include="InputState.cs" />
+    <Compile Include="JSONTable.cs" />
     <Compile Include="MagicUI.cs" />
     <Compile Include="MagicCardType.cs" />
     <Compile Include="ManaCost.cs" />
@@ -60,11 +62,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestDeck.cs" />
     <Compile Include="TestPlayer.cs" />
+    <Compile Include="UIButton.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Json Library">
-      <HintPath>..\..\..\..\Dropbox\Michael and Samuel\USB Recovery\Private\Visual Studio 2013\Projects\Json Library\Json Library\bin\Release\Json Library.dll</HintPath>
-    </Reference>
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MSBuildProgramFiles32)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>
@@ -95,6 +95,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="Icon.ico" />
+    <None Include="Content\Font.spritefont" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
