@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using System.IO;
 
 namespace MagicTheGathering
@@ -9,12 +10,21 @@ namespace MagicTheGathering
         private readonly string name;
         private readonly Texture2D texture;
         private readonly MagicCardType type;
+        public readonly Ability[] abilities;
+        public readonly string[] subtypes;
 
-        public MagicCard (string name, GraphicsDevice GraphicsDevice, MagicCardType type)
+        public MagicCard (string name, GraphicsDevice GraphicsDevice, MagicCardType type, string[] subtypes, Ability[] abilities)
         {
             this.type = type;
             this.name = name;
             texture = Texture2D.FromStream(GraphicsDevice, File.OpenRead("Cards/" + name + ".png"));
+            this.subtypes = subtypes;
+            this.abilities = abilities;
+        }
+
+        public bool IsSubtype (string subtype)
+        {
+            return new List<string>(subtypes).Contains(subtype);
         }
 
         internal MagicCardType Type

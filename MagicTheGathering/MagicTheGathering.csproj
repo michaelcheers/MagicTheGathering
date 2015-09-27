@@ -38,8 +38,11 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Action.cs" />
+    <Compile Include="Actions\AddToManaPoolAction.cs" />
     <Compile Include="Ability.cs" />
     <Compile Include="AbilityInstance.cs" />
+    <Compile Include="ActivatedAbility.cs" />
     <Compile Include="BattlefieldCardReference.cs" />
     <Compile Include="CardReference.cs" />
     <Compile Include="Extension.cs" />

@@ -58,7 +58,7 @@ namespace MagicTheGathering
                 {
                     type |= (MagicCardType)Enum.Parse(typeof(MagicCardType), item);
                 }
-                cards.Add(card, new MagicCard(card, GraphicsDevice, type));
+                cards.Add(card, new MagicCard(card, GraphicsDevice, type, cardTable.getArray("subtypes").toStringArray(), new Ability[0]));
                 return cards[card];
             }
         }

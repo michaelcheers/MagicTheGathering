@@ -26,7 +26,24 @@ namespace MagicTheGathering
             }
         }
 
-        List<Ability> abilities;
+        List<AbilityInstance> UpdateAbilities
+        {
+            get
+            {
+                if (card.Type == MagicCardType.Land)
+                {
+                    if (card.IsSubtype("Forest"))
+                    {
+
+                    }
+                }
+                return new List<AbilityInstance>();
+            }
+        }
+
+        public List<AbilityInstance> Abilities;
+
+
 
         public abstract CardLocation Location
         {

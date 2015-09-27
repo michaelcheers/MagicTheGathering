@@ -1,9 +1,9 @@
 ﻿namespace MagicTheGathering
 {
-    internal class Ability
+    internal abstract class Ability
     {
         string text;
         CardReference reference;
-        MagicGame game;
+        public abstract AbilityInstance CreateInstance();
     }
 }
