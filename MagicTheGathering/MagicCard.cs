@@ -37,9 +37,10 @@ namespace MagicTheGathering
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch, Rectangle rect)
+        public void Draw(SpriteBatch spriteBatch, Rectangle rect, float rotation)
         {
-            spriteBatch.Draw(texture, rect, Color.White);
+            Point origin = new Point(texture.Width /2, texture.Height /2);
+            spriteBatch.Draw(texture, new Rectangle(rect.X+rect.Width/2, rect.Y+rect.Height/2, rect.Width, rect.Height), null, Color.White, rotation, new Vector2(origin.X, origin.Y), SpriteEffects.None, 0);
         }
     }
 }

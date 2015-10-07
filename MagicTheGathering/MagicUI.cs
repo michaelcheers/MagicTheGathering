@@ -19,6 +19,9 @@ namespace MagicTheGatheringUI
             Rectangle animTargetRect;
             Rectangle animStartRect;
             Rectangle currentRect;
+            float animStartRotation;
+            float animTargetRotation;
+            float currentRotation;
             bool hovered;
             internal CardReference card;
             int currentState;
@@ -35,13 +38,21 @@ namespace MagicTheGatheringUI
 
             public void SetGameState(int newState) => currentState = newState;
 
-            public void SetDesiredPos(Rectangle rect)
+            public void SetDesiredPos(Rectangle newTargetRect)
             {
-                if(animTargetRect != rect)
+                float newTargetRotation = 0;
+                if (card is BattlefieldCardReference && ((BattlefieldCardReference)card).isTapped)
                 {
-                    animTargetRect = rect;
-                    animStartRect = currentRect;
+                    newTargetRotation = (float)(Math.PI / 2);
+                }
+
+                if (animTargetRect != newTargetRect || animTargetRotation != newTargetRotation)
+                {
                     animCurrentFrame = 0;
+                    animTargetRect = newTargetRect;
+                    animStartRect = currentRect;
+                    animTargetRotation = newTargetRotation;
+                    animStartRotation = currentRotation;
                 }
             }
 
@@ -57,6 +68,7 @@ namespace MagicTheGatheringUI
                     if (animCurrentFrame == animDuration)
                     {
                         currentRect = animTargetRect;
+                        currentRotation = animTargetRotation;
                     }
                     else
                     {
@@ -68,10 +80,13 @@ namespace MagicTheGatheringUI
                             Lerp(animStartRect.Width, animTargetRect.Width, fraction),
                             Lerp(animStartRect.Height, animTargetRect.Height, fraction)
                         );
+
+                        currentRotation = fLerp(animStartRotation, animTargetRotation, fraction);
                     }
                 }
             }
 
+            public float fLerp(float a, float b, float fraction) => (float)(a + fraction * (b - a));
             public int Lerp(int a, int b, float fraction) => (int)(a + fraction * (b-a));
 
             public void Draw(SpriteBatch spriteBatch)
@@ -82,17 +97,17 @@ namespace MagicTheGatheringUI
                     {
                         int HOVER_BULGE = animTargetRect.Height / 10;
                         Rectangle bulgeRect = new Rectangle(currentRect.X - HOVER_BULGE, currentRect.Y - HOVER_BULGE, currentRect.Width + HOVER_BULGE * 2, currentRect.Height + HOVER_BULGE * 2);
-                        card.card.Draw(spriteBatch, bulgeRect);
+                        card.card.Draw(spriteBatch, bulgeRect, currentRotation);
                     }
                     else
                     {
-                        card.card.Draw(spriteBatch, currentRect);
+                        card.card.Draw(spriteBatch, currentRect, currentRotation);
                         // TODO: highlight glow
                     }
                 }
                 else
                 {
-                    card.card.Draw(spriteBatch, currentRect);
+                    card.card.Draw(spriteBatch, currentRect, currentRotation);
                 }
             }
         }
@@ -233,7 +248,14 @@ namespace MagicTheGatheringUI
             if (hoveredCard != null && inputState.WasMouseLeftJustPressed())
             {
                 if (hoveredCard.card is HandCardReference)
+                {
                     viewingPlayer.Play((HandCardReference)hoveredCard.card);
+                }
+                else if (hoveredCard.card is BattlefieldCardReference)
+                {
+                    BattlefieldCardReference cardRef = ((BattlefieldCardReference)hoveredCard.card);
+                    cardRef.isTapped = !cardRef.isTapped;
+                }
             }
 
             foreach(UIButton button in buttons)

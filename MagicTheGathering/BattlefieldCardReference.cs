@@ -13,7 +13,7 @@ namespace MagicTheGathering
         }
 
         Player controller;
-        bool isTapped;
+        public bool isTapped;
 
         public override CardLocation Location
         {
