@@ -25,7 +25,7 @@ namespace MagicTheGatheringUI
             const int animDuration = 15;
             int animCurrentFrame;
 
-            public bool Active(int state) { return currentState == state; }
+            public bool Active(int state) => currentState == state;
 
             public UICard(CardReference card, int showingGameState)
             {
@@ -33,10 +33,7 @@ namespace MagicTheGatheringUI
                 currentState = showingGameState;
             }
 
-            public void SetGameState(int newState)
-            {
-                currentState = newState;
-            }
+            public void SetGameState(int newState) => currentState = newState;
 
             public void SetDesiredPos(Rectangle rect)
             {
@@ -48,10 +45,7 @@ namespace MagicTheGatheringUI
                 }
             }
 
-            public bool Contains(Vector2 pos)
-            {
-                return currentRect.Contains(pos);
-            }
+            public bool Contains(Vector2 pos) => currentRect.Contains(pos);
 
             public void Update(bool hovered)
             {
@@ -78,10 +72,7 @@ namespace MagicTheGatheringUI
                 }
             }
 
-            public int Lerp(int a, int b, float fraction)
-            {
-                return (int)(a + fraction * (b-a));
-            }
+            public int Lerp(int a, int b, float fraction) => (int)(a + fraction * (b-a));
 
             public void Draw(SpriteBatch spriteBatch)
             {
@@ -173,10 +164,7 @@ namespace MagicTheGatheringUI
             buttons = new List<UIButton>() { new UIButton("Continue", new Rectangle(10, 10, 100, 50), basicButtonStyle, OnPressContinue) };
         }
 
-        public void OnPressContinue()
-        {
-            viewingPlayer.ContinueToNextPhase();
-        }
+        public void OnPressContinue() => viewingPlayer.ContinueToNextPhase();
 
         public void NewGameState()
         {
