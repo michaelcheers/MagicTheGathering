@@ -27,14 +27,11 @@ namespace MagicTheGathering
 
         protected abstract void UpdateAbilites(List<AbilityInstance> abilities);
 
-        List<AbilityInstance> UpdateAbilities
+        public void UpdateAbilities ()
         {
-            get
-            {
-                List<AbilityInstance> result = new List<AbilityInstance>();
-                UpdateAbilites(result);
-                return new List<AbilityInstance>();
-            }
+            List<AbilityInstance> result = new List<AbilityInstance>();
+            UpdateAbilites(result);
+            Abilities = result;
         }
 
         public List<AbilityInstance> Abilities;
@@ -50,6 +47,7 @@ namespace MagicTheGathering
         {
             this.card = card;
             this.cardID = id;
+            UpdateAbilities();
         }
 
         internal CardReference(CardReference cardRef)
@@ -57,6 +55,7 @@ namespace MagicTheGathering
             this.card = cardRef.card;
             this.cardID = cardRef.cardID;
             this.old = cardRef;
+            UpdateAbilities();
         }
     }
 }

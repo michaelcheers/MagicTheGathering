@@ -27,6 +27,10 @@ namespace MagicTheGathering
         {
             manaPool.Empty();
             landsPlayed = 0;
+            foreach (var item in battlefield)
+            {
+                item.isUntapped = true;
+            }
             var card = deck.DrawTopCard();
             if (card == null)
                 Environment.Exit(0);

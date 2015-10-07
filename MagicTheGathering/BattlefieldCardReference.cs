@@ -10,7 +10,8 @@ namespace MagicTheGathering
     {
         internal BattlefieldCardReference(CardReference card, Player controller) : base(card) { this.controller = controller; }
 
-        Player controller;
+
+        internal Player controller;
         internal bool isTapped = false;
         internal bool isUntapped
         {
