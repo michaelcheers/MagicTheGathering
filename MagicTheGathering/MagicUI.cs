@@ -106,6 +106,7 @@ namespace MagicTheGathering
         Player viewingPlayer;
         List<UIButton> buttons;
         UIButtonStyleSet basicButtonStyle;
+        Texture2D symbolsTexture;
 
         readonly Vector2 handCardSize = new Vector2(75, 100);
         readonly Vector2 battlefieldCardSize = new Vector2(60, 80);
@@ -124,6 +125,8 @@ namespace MagicTheGathering
             Texture2D normalButtonTexture = Texture2D.FromStream(device, File.OpenRead("Content/button3d.png"));
             Texture2D hoverButtonTexture = Texture2D.FromStream(device, File.OpenRead("Content/button3d_hover.png"));
             Texture2D pressButtonTexture = Texture2D.FromStream(device, File.OpenRead("Content/button3d_pressed.png"));
+
+            symbolsTexture = Texture2D.FromStream(device, File.OpenRead("Content/mtgsymbols.png"));
 
             basicButtonStyle = new UIButtonStyleSet(
                 new UIButtonStyle(font, Color.Black, normalButtonTexture, Color.White),
