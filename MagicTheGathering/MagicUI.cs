@@ -100,16 +100,19 @@ namespace MagicTheGatheringUI
         Player viewingPlayer;
         List<UIButton> buttons;
         UIButtonStyleSet basicButtonStyle;
-        Texture2D symbolsTexture;
-        Dictionary<MTGColor, Rectangle> colorSymbolRects = new Dictionary<MTGColor, Rectangle>()
+        SpriteFont font;
+
+        static Texture2D symbolsTexture;
+        static Dictionary<MTGColor, Rectangle> colorSymbolRects = new Dictionary<MTGColor, Rectangle>()
         {
+            { MTGColor.Colorless, new Rectangle(103,208,102,102) },
             { MTGColor.White, new Rectangle(418,208,102,102) },
             { MTGColor.Blue, new Rectangle(523,208,102,102) },
             { MTGColor.Black, new Rectangle(628,208,102,102) },
             { MTGColor.Red, new Rectangle(733,208,102,102) },
             { MTGColor.Green, new Rectangle(838,208,102,102) },
         };
-        Rectangle[] genericSymbolRects =
+        static Rectangle[] genericSymbolRects =
         {
             new Rectangle(-2,-2,102,102), //0
             new Rectangle(103,-2,102,102),
@@ -133,7 +136,7 @@ namespace MagicTheGatheringUI
             new Rectangle(943,103,102,102),
             new Rectangle(-2,208,102,102), //20
         };
-        Rectangle tapSymbolRect = new Rectangle(-2,523, 102,102);
+        static Rectangle tapSymbolRect = new Rectangle(-2,523, 102,102);
 
         readonly Vector2 handCardSize = new Vector2(75, 100);
         readonly Vector2 battlefieldCardSize = new Vector2(60, 80);
@@ -147,7 +150,7 @@ namespace MagicTheGatheringUI
         {
             this.viewingPlayer = viewingPlayer;
 
-            SpriteFont font = content.Load<SpriteFont>("Font");
+            font = content.Load<SpriteFont>("Font");
 
             Texture2D normalButtonTexture = Texture2D.FromStream(device, File.OpenRead("Content/button3d.png"));
             Texture2D hoverButtonTexture = Texture2D.FromStream(device, File.OpenRead("Content/button3d_hover.png"));
@@ -250,6 +253,8 @@ namespace MagicTheGatheringUI
             {
                 button.Draw(spriteBatch);
             }
+
+            viewingPlayer.manaPool.Draw(spriteBatch, font, new Vector2(200,20));
         }
 
         void LayOutArea(Rectangle bounds, IEnumerable<CardReference> cards, Vector2 cardSize, float cardSpacing)
@@ -307,6 +312,11 @@ namespace MagicTheGatheringUI
                 gameStateRepresentation[c.cardID].SetDesiredPos(new Rectangle((int)(handStartPos.X + (handSpacing * handIdx)), (int)handStartPos.Y, (int)handCardSize.X, (int)handCardSize.Y));
                 handIdx++;
             }*/
+        }
+
+        public static void DrawColorSymbol(SpriteBatch spriteBatch, MTGColor color, Rectangle rect)
+        {
+            spriteBatch.Draw(symbolsTexture, rect, colorSymbolRects[color], Color.White);
         }
 
         public static void Draw9Grid(SpriteBatch spriteBatch, Texture2D texture, Rectangle rect, Color color)

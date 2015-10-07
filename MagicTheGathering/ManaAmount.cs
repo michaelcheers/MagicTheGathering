@@ -72,6 +72,30 @@ namespace MagicTheGathering
             }
         }
 
+        public bool ContainsAtLeast(ManaAmount amount)
+        {
+            return (whiteAmount >= amount.whiteAmount &&
+                blueAmount >= amount.blueAmount &&
+                blackAmount >= amount.blackAmount &&
+                redAmount >= amount.redAmount &&
+                greenAmount >= amount.greenAmount &&
+                colorlessAmount >= amount.colorlessAmount);
+        }
+
+        public bool TrySubtract(ManaAmount amount)
+        {
+            if (!ContainsAtLeast(amount))
+                return false;
+
+            whiteAmount -= amount.whiteAmount;
+            blueAmount -= amount.blueAmount;
+            blackAmount -= amount.blackAmount;
+            redAmount -= amount.redAmount;
+            greenAmount -= amount.greenAmount;
+            colorlessAmount -= amount.colorlessAmount;
+            return true;
+        }
+
         public bool TrySubtractAmount(MTGColor c, int amount)
         {
             switch (c)
