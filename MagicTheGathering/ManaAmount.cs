@@ -34,16 +34,16 @@ namespace MagicTheGathering
             colorlessAmount = 0;
         }
 
-        public int GetAmount(Color c)
+        public int GetAmount(MTGColor c)
         {
             switch (c)
             {
-                case Color.White: return whiteAmount;
-                case Color.Blue: return blueAmount;
-                case Color.Black: return blackAmount;
-                case Color.Red: return redAmount;
-                case Color.Green: return greenAmount;
-                case Color.Colorless: return colorlessAmount;
+                case MTGColor.White: return whiteAmount;
+                case MTGColor.Blue: return blueAmount;
+                case MTGColor.Black: return blackAmount;
+                case MTGColor.Red: return redAmount;
+                case MTGColor.Green: return greenAmount;
+                case MTGColor.Colorless: return colorlessAmount;
                 default: throw new ArgumentException("Invalid color for mana get!");
             }
         }
@@ -58,30 +58,30 @@ namespace MagicTheGathering
             colorlessAmount += amount.colorlessAmount;
         }
 
-        public void AddAmount(Color c, int amount)
+        public void AddAmount(MTGColor c, int amount)
         {
             switch (c)
             {
-                case Color.White: whiteAmount += amount; break;
-                case Color.Blue: blueAmount += amount; break;
-                case Color.Black: blackAmount += amount; break;
-                case Color.Red: redAmount += amount; break;
-                case Color.Green: greenAmount += amount; break;
-                case Color.Colorless: colorlessAmount += amount; break;
+                case MTGColor.White: whiteAmount += amount; break;
+                case MTGColor.Blue: blueAmount += amount; break;
+                case MTGColor.Black: blackAmount += amount; break;
+                case MTGColor.Red: redAmount += amount; break;
+                case MTGColor.Green: greenAmount += amount; break;
+                case MTGColor.Colorless: colorlessAmount += amount; break;
                 default: throw new ArgumentException("Invalid color for mana add!");
             }
         }
 
-        public bool TrySubtractAmount(Color c, int amount)
+        public bool TrySubtractAmount(MTGColor c, int amount)
         {
             switch (c)
             {
-                case Color.White: return TrySubtractAmount(amount, ref whiteAmount);
-                case Color.Blue: return TrySubtractAmount(amount, ref blueAmount);
-                case Color.Black: return TrySubtractAmount(amount, ref blackAmount);
-                case Color.Red: return TrySubtractAmount(amount, ref redAmount);
-                case Color.Green: return TrySubtractAmount(amount, ref greenAmount);
-                case Color.Colorless: return TrySubtractAmount(amount, ref colorlessAmount);
+                case MTGColor.White: return TrySubtractAmount(amount, ref whiteAmount);
+                case MTGColor.Blue: return TrySubtractAmount(amount, ref blueAmount);
+                case MTGColor.Black: return TrySubtractAmount(amount, ref blackAmount);
+                case MTGColor.Red: return TrySubtractAmount(amount, ref redAmount);
+                case MTGColor.Green: return TrySubtractAmount(amount, ref greenAmount);
+                case MTGColor.Colorless: return TrySubtractAmount(amount, ref colorlessAmount);
                 default: throw new ArgumentException("Invalid color for mana subtract!");
             }
         }

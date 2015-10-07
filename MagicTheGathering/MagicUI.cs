@@ -8,8 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-using Color = MagicTheGathering.Color;
-using XNAColor = Microsoft.Xna.Framework.Color;
+using MTGColor = MagicTheGathering.MTGColor;
 
 namespace MagicTheGatheringUI
 {
@@ -111,13 +110,13 @@ namespace MagicTheGatheringUI
         List<UIButton> buttons;
         UIButtonStyleSet basicButtonStyle;
         Texture2D symbolsTexture;
-        Dictionary<Color, Rectangle> colorSymbolRects = new Dictionary<Color, Rectangle>()
+        Dictionary<MTGColor, Rectangle> colorSymbolRects = new Dictionary<MTGColor, Rectangle>()
         {
-            { Color.White, new Rectangle(418,208,102,102) },
-            { Color.Blue, new Rectangle(523,208,102,102) },
-            { Color.Black, new Rectangle(628,208,102,102) },
-            { Color.Red, new Rectangle(733,208,102,102) },
-            { Color.Green, new Rectangle(838,208,102,102) },
+            { MTGColor.White, new Rectangle(418,208,102,102) },
+            { MTGColor.Blue, new Rectangle(523,208,102,102) },
+            { MTGColor.Black, new Rectangle(628,208,102,102) },
+            { MTGColor.Red, new Rectangle(733,208,102,102) },
+            { MTGColor.Green, new Rectangle(838,208,102,102) },
         };
         Rectangle[] genericSymbolRects =
         {
@@ -166,9 +165,9 @@ namespace MagicTheGatheringUI
             symbolsTexture = Texture2D.FromStream(device, File.OpenRead("Content/mtgsymbols.png"));
 
             basicButtonStyle = new UIButtonStyleSet(
-                new UIButtonStyle(font, XNAColor.Black, normalButtonTexture, XNAColor.White),
-                new UIButtonStyle(font, XNAColor.Yellow, hoverButtonTexture, XNAColor.White),
-                new UIButtonStyle(font, XNAColor.Yellow, pressButtonTexture, XNAColor.White, new Vector2(0,1))
+                new UIButtonStyle(font, Color.Black, normalButtonTexture, Color.White),
+                new UIButtonStyle(font, Color.Yellow, hoverButtonTexture, Color.White),
+                new UIButtonStyle(font, Color.Yellow, pressButtonTexture, Color.White, new Vector2(0,1))
             );
 
             buttons = new List<UIButton>() { new UIButton("Continue", new Rectangle(10, 10, 100, 50), basicButtonStyle, OnPressContinue) };
@@ -322,7 +321,7 @@ namespace MagicTheGatheringUI
             }*/
         }
 
-        public static void Draw9Grid(SpriteBatch spriteBatch, Texture2D texture, Rectangle rect, XNAColor color)
+        public static void Draw9Grid(SpriteBatch spriteBatch, Texture2D texture, Rectangle rect, Color color)
         {
             Point cornerSize = new Point(Math.Min(rect.Width,texture.Width) / 2, Math.Min(rect.Height, texture.Height) / 2);
             //top left

@@ -6,7 +6,7 @@ using System.Text;
 namespace MagicTheGathering
 {
     [Flags]
-    public enum Color
+    public enum MTGColor
     {
         Colorless = 0,
         White = 1,

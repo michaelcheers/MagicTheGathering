@@ -23,7 +23,7 @@ namespace MagicTheGathering
             amount.Add(newAmount);
         }
 
-        public int Get(Color c)
+        public int Get(MTGColor c)
         {
             return amount.GetAmount(c);
         }

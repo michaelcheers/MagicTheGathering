@@ -46,7 +46,7 @@
     <Compile Include="BattlefieldCardReference.cs" />
     <Compile Include="CardReference.cs" />
     <Compile Include="Choices.cs" />
-    <Compile Include="Color.cs" />
+    <Compile Include="MTGColor.cs" />
     <Compile Include="Cost.cs" />
     <Compile Include="CostComponent.cs" />
     <Compile Include="Extension.cs" />
