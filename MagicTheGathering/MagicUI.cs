@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using MagicTheGathering;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -7,7 +8,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace MagicTheGathering
+using Color = MagicTheGathering.Color;
+using XNAColor = Microsoft.Xna.Framework.Color;
+
+namespace MagicTheGatheringUI
 {
     class MagicUI
     {
@@ -107,6 +111,39 @@ namespace MagicTheGathering
         List<UIButton> buttons;
         UIButtonStyleSet basicButtonStyle;
         Texture2D symbolsTexture;
+        Dictionary<Color, Rectangle> colorSymbolRects = new Dictionary<Color, Rectangle>()
+        {
+            { Color.White, new Rectangle(418,208,102,102) },
+            { Color.Blue, new Rectangle(523,208,102,102) },
+            { Color.Black, new Rectangle(628,208,102,102) },
+            { Color.Red, new Rectangle(733,208,102,102) },
+            { Color.Green, new Rectangle(838,208,102,102) },
+        };
+        Rectangle[] genericSymbolRects =
+        {
+            new Rectangle(-2,-2,102,102), //0
+            new Rectangle(103,-2,102,102),
+            new Rectangle(208,-2,102,102),
+            new Rectangle(313,-2,102,102),
+            new Rectangle(418,-2,102,102),
+            new Rectangle(523,-2,102,102),
+            new Rectangle(628,-2,102,102),
+            new Rectangle(733,-2,102,102),
+            new Rectangle(838,-2,102,102),
+            new Rectangle(943,-2,102,102),
+            new Rectangle(-2,103,102,102), //10
+            new Rectangle(103,103,102,102),
+            new Rectangle(208,103,102,102),
+            new Rectangle(313,103,102,102),
+            new Rectangle(418,103,102,102),
+            new Rectangle(523,103,102,102),
+            new Rectangle(628,103,102,102),
+            new Rectangle(733,103,102,102),
+            new Rectangle(838,103,102,102),
+            new Rectangle(943,103,102,102),
+            new Rectangle(-2,208,102,102), //20
+        };
+        Rectangle tapSymbolRect = new Rectangle(-2,523, 102,102);
 
         readonly Vector2 handCardSize = new Vector2(75, 100);
         readonly Vector2 battlefieldCardSize = new Vector2(60, 80);
@@ -129,9 +166,9 @@ namespace MagicTheGathering
             symbolsTexture = Texture2D.FromStream(device, File.OpenRead("Content/mtgsymbols.png"));
 
             basicButtonStyle = new UIButtonStyleSet(
-                new UIButtonStyle(font, Color.Black, normalButtonTexture, Color.White),
-                new UIButtonStyle(font, Color.Yellow, hoverButtonTexture, Color.White),
-                new UIButtonStyle(font, Color.Yellow, pressButtonTexture, Color.White, new Vector2(0,1))
+                new UIButtonStyle(font, XNAColor.Black, normalButtonTexture, XNAColor.White),
+                new UIButtonStyle(font, XNAColor.Yellow, hoverButtonTexture, XNAColor.White),
+                new UIButtonStyle(font, XNAColor.Yellow, pressButtonTexture, XNAColor.White, new Vector2(0,1))
             );
 
             buttons = new List<UIButton>() { new UIButton("Continue", new Rectangle(10, 10, 100, 50), basicButtonStyle, OnPressContinue) };
@@ -285,7 +322,7 @@ namespace MagicTheGathering
             }*/
         }
 
-        public static void Draw9Grid(SpriteBatch spriteBatch, Texture2D texture, Rectangle rect, Color color)
+        public static void Draw9Grid(SpriteBatch spriteBatch, Texture2D texture, Rectangle rect, XNAColor color)
         {
             Point cornerSize = new Point(Math.Min(rect.Width,texture.Width) / 2, Math.Min(rect.Height, texture.Height) / 2);
             //top left

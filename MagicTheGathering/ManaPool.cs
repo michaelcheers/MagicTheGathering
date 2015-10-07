@@ -7,29 +7,25 @@ namespace MagicTheGathering
 {
     public class ManaPool
     {
-        internal List<ManaAmount> amounts;
-
-        public ManaAmount[] Amounts
-        {
-            get
-            {
-                return amounts.ToArray();
-            }
-        }
+        internal ManaAmount amount;
 
         public void Empty ()
         {
-            amounts.Clear();
+            amount.Clear();
         }
 
         public ManaPool()
         {
-            amounts = new List<ManaAmount>();
         }
 
-        internal void Add (ManaAmount amount)
+        internal void Add (ManaAmount newAmount)
         {
-            amounts.Add(amount);
+            amount.Add(newAmount);
+        }
+
+        public int Get(Color c)
+        {
+            return amount.GetAmount(c);
         }
     }
 }

@@ -1,10 +1,12 @@
-﻿using Microsoft.Xna.Framework;
+﻿using MagicTheGatheringUI;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using XNAColor = Microsoft.Xna.Framework.Color;
 
 namespace MagicTheGathering
 {
@@ -116,7 +118,7 @@ namespace MagicTheGathering
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(XNAColor.CornflowerBlue);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();

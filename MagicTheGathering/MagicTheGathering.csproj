@@ -46,6 +46,7 @@
     <Compile Include="BattlefieldCardReference.cs" />
     <Compile Include="CardReference.cs" />
     <Compile Include="Choices.cs" />
+    <Compile Include="Color.cs" />
     <Compile Include="Cost.cs" />
     <Compile Include="CostComponent.cs" />
     <Compile Include="Extension.cs" />
@@ -120,6 +121,9 @@
     <None Include="Content\card-back.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="Content\mtgsymbols.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Icon.ico" />
     <None Include="Content\Font.spritefont" />
   </ItemGroup>

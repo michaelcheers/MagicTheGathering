@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.IO;
+using XNAColor = Microsoft.Xna.Framework.Color;
 
 namespace MagicTheGathering
 {
@@ -39,7 +40,7 @@ namespace MagicTheGathering
 
         public void Draw(SpriteBatch spriteBatch, Rectangle rect)
         {
-            spriteBatch.Draw(texture, rect, Color.White);
+            spriteBatch.Draw(texture, rect, XNAColor.White);
         }
     }
 }
