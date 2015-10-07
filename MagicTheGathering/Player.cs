@@ -1,6 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Threading;
 
 namespace MagicTheGathering
 {
@@ -15,15 +14,24 @@ namespace MagicTheGathering
             game.StartGame += StartGame;
             this.game = game;
             this.deck = deck;
+            manaPool = new ManaPool();
+        }
+
+        protected virtual void GameStart ()
+        {
+
         }
 
         internal void ContinueToNextPhase ()
         {
+            manaPool.Empty();
             landsPlayed = 0;
+            hand.Add(new HandCardReference(deck.DrawTopCard()));
         }
 
         internal void Play (HandCardReference card)
         {
+            Cost cost = card.Card.cost;
             switch (card.Card.Type)
             {
                 case MagicCardType.Creature:
@@ -53,7 +61,7 @@ namespace MagicTheGathering
                     break;
             }
             hand.Remove(card);
-            battlefield.Add(new BattlefieldCardReference(card));
+            battlefield.Add(new BattlefieldCardReference(card, this));
         }
 
         private void StartGame()
@@ -62,12 +70,15 @@ namespace MagicTheGathering
             {
                 Hand.Add(new HandCardReference(item));
             }
+            Thread thread = new Thread(GameStart);
+            thread.Start();
         }
 
         List<BattlefieldCardReference> battlefield = new List<BattlefieldCardReference>();
         List<HandCardReference> hand = new List<HandCardReference>();
-        MagicGame game;
-        Deck deck;
+        protected internal MagicGame game;
+        internal ManaPool manaPool;
+        protected internal Deck deck;
         int landsPlayed = 0;
 
         protected int LandsPlayed
@@ -83,7 +94,7 @@ namespace MagicTheGathering
             }
         }
         
-        public List<HandCardReference> Hand
+        protected internal List<HandCardReference> Hand
         {
             get
             {

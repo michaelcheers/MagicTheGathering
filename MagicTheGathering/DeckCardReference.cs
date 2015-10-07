@@ -20,6 +20,11 @@ namespace MagicTheGathering
             return new DeckCardReference(card);
         }
 
+        protected override void UpdateAbilites(List<AbilityInstance> abilities)
+        {
+            throw new NotImplementedException();
+        }
+
         public override CardLocation Location
         {
             get

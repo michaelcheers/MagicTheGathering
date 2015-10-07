@@ -21,6 +21,7 @@ namespace MagicTheGathering
         MagicGame host;
         MagicUI ui;
         Input.InputState inputState = new Input.InputState();
+        Texture2D cardBack;
 
         public Game1()
         {
@@ -58,7 +59,7 @@ namespace MagicTheGathering
                 {
                     type |= (MagicCardType)Enum.Parse(typeof(MagicCardType), item);
                 }
-                cards.Add(card, new MagicCard(card, GraphicsDevice, type, cardTable.getArray("subtypes").toStringArray(), new Ability[0]));
+                cards.Add(card, new MagicCard(card, GraphicsDevice, type, cardTable.getArray("subtypes").toStringArray(), new Ability[0], new Cost(new List<CostComponent>() { ManaPaymentComponent.Parse(cardTable.getString("manaCost", "0")) })));
                 return cards[card];
             }
         }
@@ -72,13 +73,15 @@ namespace MagicTheGathering
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            List<MagicCard> list = new List<MagicCard>() { LoadCard("Catacomb Slug", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Swamp", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Plains", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Swamp", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Plains", GraphicsDevice, table) };
+            List<MagicCard> list = new List<MagicCard>() {LoadCard("Memnite", GraphicsDevice, table), LoadCard("Catacomb Slug", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Swamp", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Plains", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Swamp", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Plains", GraphicsDevice, table), LoadCard("Island", GraphicsDevice, table), LoadCard("Mountain", GraphicsDevice, table), LoadCard("Forest", GraphicsDevice, table) };
             list.Shuffle();
             Deck deck = new NormalDeck(list);
-            player = new DefaultPlayer(host, deck);
+            player = new TestPlayer(host, deck);
             ui = new MagicUI(player, Content, GraphicsDevice);
             host.ReadyGameForStart();
             // TODO: use this.Content to load your game content here
+
+            cardBack = Content.Load<Texture2D>("card-back");
         }
 
         /// <summary>

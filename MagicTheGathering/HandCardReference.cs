@@ -18,5 +18,9 @@ namespace MagicTheGathering
                 return CardLocation.Hand;
             }
         }
+
+        protected override void UpdateAbilites(List<AbilityInstance> abilities)
+        {
+        }
     }
 }

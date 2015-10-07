@@ -12,12 +12,14 @@ namespace MagicTheGathering
         private readonly MagicCardType type;
         public readonly Ability[] abilities;
         public readonly string[] subtypes;
-
-        public MagicCard (string name, GraphicsDevice GraphicsDevice, MagicCardType type, string[] subtypes, Ability[] abilities)
+        public readonly Cost cost;
+        
+        public MagicCard (string name, GraphicsDevice GraphicsDevice, MagicCardType type, string[] subtypes, Ability[] abilities, Cost cost)
         {
+            this.cost = cost;
             this.type = type;
             this.name = name;
-            texture = Texture2D.FromStream(GraphicsDevice, File.OpenRead("Cards/" + name + ".png"));
+            texture = Texture2D.FromStream(GraphicsDevice, File.OpenRead("Cards/" + name + ".jpg"));
             this.subtypes = subtypes;
             this.abilities = abilities;
         }

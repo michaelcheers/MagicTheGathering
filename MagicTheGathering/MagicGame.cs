@@ -13,9 +13,9 @@ namespace MagicTheGathering
         }
         public void ReadyGameForStart ()
         {
-            if (this.StartGame != null)
+            if (StartGame != null)
             {
-                this.StartGame();
+                StartGame();
             }
         }
         public void Update ()

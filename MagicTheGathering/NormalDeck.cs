@@ -29,6 +29,8 @@ namespace MagicTheGathering
 
         public override CardReference GetCard(int index)
         {
+            if (cards.Count == 0)
+                return null;
             return cards[index];
         }
     }

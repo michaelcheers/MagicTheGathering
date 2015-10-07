@@ -4,6 +4,9 @@
     {
         string text;
         CardReference reference;
-        public abstract AbilityInstance CreateInstance();
+        public AbilityInstance CreateInstance()
+        {
+            return new AbilityInstance(this);
+        }
     }
 }

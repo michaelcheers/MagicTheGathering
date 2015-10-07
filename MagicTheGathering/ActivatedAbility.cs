@@ -7,10 +7,15 @@ namespace MagicTheGathering
 {
     class ActivatedAbility
     {
-        public ActivatedAbility (bool isManaAbility = false)
+        public ActivatedAbility (Cost cost = null, MagicCardAction toDo = null, bool isManaAbility = false)
         {
             this.isManaAbility = isManaAbility;
+            this.cost = cost;
+            this.toDo = toDo;
         }
+
+        Cost cost;
+        MagicCardAction toDo;
         bool isManaAbility;
     }
 }

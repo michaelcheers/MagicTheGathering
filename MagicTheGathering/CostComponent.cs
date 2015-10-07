@@ -5,12 +5,12 @@ using System.Text;
 
 namespace MagicTheGathering
 {
-    class AbilityInstance
+    abstract class CostComponent
     {
-        public AbilityInstance (Ability ability)
+        public abstract bool IsPayable
         {
-            this.ability = ability;
+            get;
         }
-        Ability ability;
+        public abstract Choices GetChoices(); 
     }
 }

@@ -5,16 +5,24 @@ using System.Text;
 
 namespace MagicTheGathering
 {
-    struct ManaCost
+    class ManaPaymentComponent : CostComponent
     {
         private int redCost;
-        private int blueCost;
-        private int greenCost;
-        private int blackCost;
-        private int whiteCost;
-        private int colorlessCost;
+        internal int blueCost;
+        internal int greenCost;
+        internal int blackCost;
+        internal int whiteCost;
+        internal int colorlessCost;
 
-        public ManaCost(int redCost, int blueCost, int greenCost, int blackCost, int whiteCost, int colorlessCost) : this()
+        public override bool IsPayable
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public ManaPaymentComponent(int redCost, int blueCost, int greenCost, int blackCost, int whiteCost, int colorlessCost)
         {
             this.redCost = redCost;
             this.blueCost = blueCost;
@@ -24,7 +32,7 @@ namespace MagicTheGathering
             this.colorlessCost = colorlessCost;
         }
 
-        public static ManaCost Parse (string value)
+        public static ManaPaymentComponent Parse(string value)
         {
             int redCost = 0;
             int blueCost = 0;
@@ -75,7 +83,7 @@ namespace MagicTheGathering
                 }
             }
 
-            return new ManaCost(redCost, blueCost, greenCost, blackCost, whiteCost, colorlessCost);
+            return new ManaPaymentComponent(redCost, blueCost, greenCost, blackCost, whiteCost, colorlessCost);
         }
 
         public override string ToString()
@@ -106,6 +114,11 @@ namespace MagicTheGathering
             if (output.Length == 0)
                 output.Append("0");
             return output.ToString();
+        }
+
+        public override Choices GetChoices()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -5,10 +5,7 @@ using System.Text;
 
 namespace MagicTheGathering
 {
-    abstract class MagicCardAction : Ability
+    class Choices
     {
-        CardReference cause;
-        
-        public abstract void Run();
     }
 }

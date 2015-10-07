@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using System;
 
 namespace MagicTheGathering
 {
@@ -26,17 +24,14 @@ namespace MagicTheGathering
             }
         }
 
+        protected abstract void UpdateAbilites(List<AbilityInstance> abilities);
+
         List<AbilityInstance> UpdateAbilities
         {
             get
             {
-                if (card.Type == MagicCardType.Land)
-                {
-                    if (card.IsSubtype("Forest"))
-                    {
-
-                    }
-                }
+                List<AbilityInstance> result = new List<AbilityInstance>();
+                UpdateAbilites(result);
                 return new List<AbilityInstance>();
             }
         }
