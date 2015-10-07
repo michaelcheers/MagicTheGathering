@@ -15,6 +15,7 @@ namespace MagicTheGathering
         }
         public readonly MagicCard card; // for example, Island. All Islands have the same MagicCard.
         internal readonly CardID cardID; // identifies a specific instance of a card.
+        CardReference old;
 
         internal MagicCard Card
         {
@@ -55,6 +56,7 @@ namespace MagicTheGathering
         {
             this.card = cardRef.card;
             this.cardID = cardRef.cardID;
+            this.old = cardRef;
         }
     }
 }

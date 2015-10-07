@@ -8,12 +8,21 @@ namespace MagicTheGathering
 {
     class BattlefieldCardReference : CardReference
     {
-        internal BattlefieldCardReference(CardReference card, Player controller) : base(card)
-        {
-        }
+        internal BattlefieldCardReference(CardReference card, Player controller) : base(card) { this.controller = controller; }
 
         Player controller;
-        bool isTapped;
+        internal bool isTapped = false;
+        internal bool isUntapped
+        {
+            get
+            {
+                return !isTapped;
+            }
+            set
+            {
+                isTapped = !value;
+            }
+        }
 
         public override CardLocation Location
         {
@@ -29,7 +38,7 @@ namespace MagicTheGathering
             {
                 if (card.IsSubtype("Forest"))
                 {
-                    abilities.Add(new AbilityInstance(new AddToManaPoolAction(controller, ManaAmount.Parse("G"))));
+                    abilities.Add(new AbilityInstance(new ActivatedAbility(new Cost(), new AddToManaPoolAction(controller, ManaAmount.Parse("G")), true, true)));
                 }
             }
         }

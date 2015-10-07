@@ -5,10 +5,12 @@ using System.Text;
 
 namespace MagicTheGathering
 {
-    class ActivatedAbility
+    class ActivatedAbility : Ability
     {
         public ActivatedAbility (Cost cost = null, MagicCardAction toDo = null, bool isManaAbility = false, bool hasTapSymbol = false, bool hasUnTapSymbol = false)
         {
+            if (cost != null)
+                cost = new Cost();
             this.isManaAbility = isManaAbility;
             this.cost = cost;
             this.toDo = toDo;
@@ -16,6 +18,16 @@ namespace MagicTheGathering
             this.hasUnTapSymbol = hasUnTapSymbol;
         }
 
+        public void ActiveAbility ()
+        {
+            if (hasTapSymbol)
+                if (reference.isUntapped)
+                    reference.isTapped = true;
+                else
+                    return;
+        }
+
+        BattlefieldCardReference reference;
         Cost cost;
         MagicCardAction toDo;
         bool hasTapSymbol;
