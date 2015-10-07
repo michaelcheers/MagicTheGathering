@@ -253,8 +253,15 @@ namespace MagicTheGatheringUI
                 }
                 else if (hoveredCard.card is BattlefieldCardReference)
                 {
-                    BattlefieldCardReference cardRef = ((BattlefieldCardReference)hoveredCard.card);
-                    cardRef.isTapped = !cardRef.isTapped;
+                    foreach(AbilityInstance a in hoveredCard.card.Abilities)
+                    {
+                        if(a.ability is ActivatedAbility)
+                        {
+                            ((ActivatedAbility)a.ability).Activate();
+                        }
+                    }
+//                    BattlefieldCardReference cardRef = ((BattlefieldCardReference)hoveredCard.card);
+//                    cardRef.isTapped = !cardRef.isTapped;
                 }
             }
 

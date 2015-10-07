@@ -11,6 +11,6 @@ namespace MagicTheGathering
         {
             this.ability = ability;
         }
-        Ability ability;
+        internal Ability ability;
     }
 }

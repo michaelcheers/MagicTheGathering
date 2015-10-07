@@ -18,7 +18,7 @@ namespace MagicTheGathering
             this.hasUnTapSymbol = hasUnTapSymbol;
         }
 
-        public void ActiveAbility ()
+        public void Activate ()
         {
             if (hasTapSymbol)
                 if (reference.isUntapped)
