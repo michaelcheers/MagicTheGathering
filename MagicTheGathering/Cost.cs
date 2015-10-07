@@ -12,6 +12,8 @@ namespace MagicTheGathering
             payment = components;
         }
 
+        public Cost () : this(new List<CostComponent>()) { }
+
         internal CostComponent[] Payment
         {
             get
