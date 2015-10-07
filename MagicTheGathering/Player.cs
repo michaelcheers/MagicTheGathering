@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace MagicTheGathering
@@ -26,7 +27,10 @@ namespace MagicTheGathering
         {
             manaPool.Empty();
             landsPlayed = 0;
-            hand.Add(new HandCardReference(deck.DrawTopCard()));
+            var card = deck.DrawTopCard();
+            if (card == null)
+                Environment.Exit(0);
+            hand.Add(new HandCardReference(card));
         }
 
         internal void Play (HandCardReference card)
@@ -68,6 +72,8 @@ namespace MagicTheGathering
         {
             foreach (var item in deck.DrawTopCard(7))
             {
+                if (item == null)
+                    Environment.Exit(0);
                 Hand.Add(new HandCardReference(item));
             }
             Thread thread = new Thread(GameStart);

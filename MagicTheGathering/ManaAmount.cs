@@ -110,6 +110,59 @@ namespace MagicTheGathering
             }
         }
 
+        public static ManaAmount Parse(string value)
+        {
+            int redAmount = 0;
+            int blueAmount = 0;
+            int greenAmount = 0;
+            int blackAmount = 0;
+            int whiteAmount = 0;
+            int colorlessAmount = 0;
+
+            foreach (char c in value)
+            {
+                switch (char.ToUpper(c))
+                {
+                    case 'R':
+                        {
+                            redAmount++;
+                            break;
+                        }
+                    case 'G':
+                        {
+                            greenAmount++;
+                            break;
+                        }
+                    case 'U':
+                        {
+                            blueAmount++;
+                            break;
+                        }
+                    case 'B':
+                        {
+                            blackAmount++;
+                            break;
+                        }
+                    case 'W':
+                        {
+                            whiteAmount++;
+                            break;
+                        }
+                    case '{':
+                    case '}':
+                        break;
+                    default:
+                        {
+                            colorlessAmount *= 10;
+                            colorlessAmount += int.Parse(c.ToString());
+
+                            break;
+                        }
+                }
+            }
+            return new ManaAmount(redAmount, blueAmount, greenAmount, blackAmount, whiteAmount, colorlessAmount);
+        }
+
         bool TrySubtractAmount(int amount, ref int internalAmount)
         {
             if(internalAmount >= amount)
@@ -121,6 +174,13 @@ namespace MagicTheGathering
             {
                 return false;
             }
+        }
+        public static ManaAmount operator + (ManaAmount i1, ManaAmount i2)
+        {
+            i1 = (ManaAmount)(i1.MemberwiseClone());
+            i1.Add(i2);
+            ManaAmount result = i1;
+            return i1;
         }
     }
 }

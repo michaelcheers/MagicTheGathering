@@ -21,6 +21,7 @@ namespace MagicTheGathering
         public override CardReference DrawCard(int index)
         {
             CardReference result = GetCard(index);
+            if (result != null)
             cards.RemoveAt(index);
             return result;
         }

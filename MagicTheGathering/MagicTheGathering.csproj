@@ -68,6 +68,7 @@
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TapCostComponent.cs" />
     <Compile Include="TestDeck.cs" />
     <Compile Include="TestPlayer.cs" />
     <Compile Include="UIButton.cs" />

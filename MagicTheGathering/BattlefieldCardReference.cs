@@ -28,7 +28,7 @@ namespace MagicTheGathering
             {
                 if (card.IsSubtype("Forest"))
                 {
-                    abilities.Add(new AbilityInstance(new AddToManaPoolAction()));
+                    abilities.Add(new AbilityInstance(new AddToManaPoolAction(controller, ManaAmount.Parse("G"))));
                 }
             }
         }
