@@ -19,7 +19,7 @@ namespace MagicTheGathering
             }
         }
 
-        protected override void UpdateAbilites(List<AbilityInstance> abilities)
+        protected override void UpdateAbilities(List<AbilityInstance> abilities)
         {
         }
     }

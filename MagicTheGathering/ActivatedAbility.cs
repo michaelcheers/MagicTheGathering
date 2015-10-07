@@ -18,16 +18,16 @@ namespace MagicTheGathering
             this.hasUnTapSymbol = hasUnTapSymbol;
         }
 
-        public void Activate ()
+        public void Activate (BattlefieldCardReference reference)
         {
             if (hasTapSymbol)
                 if (reference.isUntapped)
                     reference.isTapped = true;
                 else
                     return;
+            toDo.Run();
         }
-
-        BattlefieldCardReference reference;
+        
         Cost cost;
         MagicCardAction toDo;
         bool hasTapSymbol;

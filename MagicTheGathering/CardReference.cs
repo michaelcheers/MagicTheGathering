@@ -25,12 +25,12 @@ namespace MagicTheGathering
             }
         }
 
-        protected abstract void UpdateAbilites(List<AbilityInstance> abilities);
+        protected abstract void UpdateAbilities(List<AbilityInstance> abilities);
 
         public void UpdateAbilities ()
         {
             List<AbilityInstance> result = new List<AbilityInstance>();
-            UpdateAbilites(result);
+            UpdateAbilities(result);
             Abilities = result;
         }
 
@@ -50,11 +50,12 @@ namespace MagicTheGathering
             UpdateAbilities();
         }
 
-        internal CardReference(CardReference cardRef)
+        internal CardReference(CardReference cardRef, bool runUpdateAbilities = true)
         {
             this.card = cardRef.card;
             this.cardID = cardRef.cardID;
             this.old = cardRef;
+            if (runUpdateAbilities)
             UpdateAbilities();
         }
     }

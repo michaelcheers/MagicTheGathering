@@ -257,7 +257,7 @@ namespace MagicTheGatheringUI
                     {
                         if(a.ability is ActivatedAbility)
                         {
-                            ((ActivatedAbility)a.ability).Activate();
+                            ((ActivatedAbility)a.ability).Activate((BattlefieldCardReference)hoveredCard.card);
                         }
                     }
 //                    BattlefieldCardReference cardRef = ((BattlefieldCardReference)hoveredCard.card);

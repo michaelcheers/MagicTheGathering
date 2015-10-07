@@ -20,7 +20,7 @@ namespace MagicTheGathering.Abilities
             this.toAdd = toAdd;
             this.you = you;
         }
-
+ 
         public override void Run()
         {
             you.manaPool.Add(toAdd);
