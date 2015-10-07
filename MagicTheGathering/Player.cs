@@ -39,7 +39,18 @@ namespace MagicTheGathering
 
         internal void Play (HandCardReference card)
         {
-            Cost cost = card.Card.cost;
+            foreach (CostComponent component in card.card.cost.Payment)
+            {
+                // FIXME: costs should have a simple "try to pay this" function!
+                if (component is ManaPaymentComponent)
+                {
+                    if (!((ManaPaymentComponent)component).TryPayWith(manaPool))
+                    {
+                        return;
+                    }
+                }
+            }
+
             switch (card.Card.Type)
             {
                 case MagicCardType.Creature:

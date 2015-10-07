@@ -120,7 +120,7 @@ namespace MagicTheGatheringUI
         static Texture2D symbolsTexture;
         static Dictionary<MTGColor, Rectangle> colorSymbolRects = new Dictionary<MTGColor, Rectangle>()
         {
-            { MTGColor.Colorless, new Rectangle(103,208,102,102) },
+            { MTGColor.ColorlessMana, new Rectangle(103,208,102,102) },
             { MTGColor.White, new Rectangle(418,208,102,102) },
             { MTGColor.Blue, new Rectangle(523,208,102,102) },
             { MTGColor.Black, new Rectangle(628,208,102,102) },
@@ -249,7 +249,24 @@ namespace MagicTheGatheringUI
             {
                 if (hoveredCard.card is HandCardReference)
                 {
-                    viewingPlayer.Play((HandCardReference)hoveredCard.card);
+                    bool paymentFailed = false;
+                    foreach (CostComponent component in hoveredCard.card.card.cost.Payment)
+                    {
+                        // FIXME: components should have a simple "pay me" function
+                        if (component is ManaPaymentComponent)
+                        {
+                            if(!((ManaPaymentComponent)component).TryPayWith(viewingPlayer.manaPool))
+                            {
+                                paymentFailed = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!paymentFailed)
+                    {
+                        viewingPlayer.Play((HandCardReference)hoveredCard.card);
+                    }
                 }
                 else if (hoveredCard.card is BattlefieldCardReference)
                 {

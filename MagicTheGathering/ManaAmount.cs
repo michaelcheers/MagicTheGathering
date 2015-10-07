@@ -43,7 +43,7 @@ namespace MagicTheGathering
                 case MTGColor.Black: return blackAmount;
                 case MTGColor.Red: return redAmount;
                 case MTGColor.Green: return greenAmount;
-                case MTGColor.Colorless: return colorlessAmount;
+                case MTGColor.ColorlessMana: return colorlessAmount;
                 default: throw new ArgumentException("Invalid color for mana get!");
             }
         }
@@ -58,6 +58,20 @@ namespace MagicTheGathering
             colorlessAmount += amount.colorlessAmount;
         }
 
+        public void SetAmount(MTGColor c, int amount)
+        {
+            switch (c)
+            {
+                case MTGColor.White: whiteAmount = amount; break;
+                case MTGColor.Blue: blueAmount = amount; break;
+                case MTGColor.Black: blackAmount = amount; break;
+                case MTGColor.Red: redAmount = amount; break;
+                case MTGColor.Green: greenAmount = amount; break;
+                case MTGColor.ColorlessMana: colorlessAmount = amount; break;
+                default: throw new ArgumentException("Invalid color for mana set amount!");
+            }
+        }
+
         public void AddAmount(MTGColor c, int amount)
         {
             switch (c)
@@ -67,7 +81,7 @@ namespace MagicTheGathering
                 case MTGColor.Black: blackAmount += amount; break;
                 case MTGColor.Red: redAmount += amount; break;
                 case MTGColor.Green: greenAmount += amount; break;
-                case MTGColor.Colorless: colorlessAmount += amount; break;
+                case MTGColor.ColorlessMana: colorlessAmount += amount; break;
                 default: throw new ArgumentException("Invalid color for mana add!");
             }
         }
@@ -105,7 +119,7 @@ namespace MagicTheGathering
                 case MTGColor.Black: return TrySubtractAmount(amount, ref blackAmount);
                 case MTGColor.Red: return TrySubtractAmount(amount, ref redAmount);
                 case MTGColor.Green: return TrySubtractAmount(amount, ref greenAmount);
-                case MTGColor.Colorless: return TrySubtractAmount(amount, ref colorlessAmount);
+                case MTGColor.ColorlessMana: return TrySubtractAmount(amount, ref colorlessAmount);
                 default: throw new ArgumentException("Invalid color for mana subtract!");
             }
         }

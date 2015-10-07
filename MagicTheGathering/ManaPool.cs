@@ -30,12 +30,33 @@ namespace MagicTheGathering
             return amount.GetAmount(c);
         }
 
-        static MTGColor[] ColorsList = { MTGColor.White, MTGColor.Blue, MTGColor.Black, MTGColor.Red, MTGColor.Green, MTGColor.Colorless };
+        public void SetManaRemaining(Dictionary<MTGColor, int> mana)
+        {
+            foreach (MTGColor c in ManaTypesList)
+            {
+                if (mana.ContainsKey(c))
+                    amount.SetAmount(c, mana[c]);
+                else
+                    amount.SetAmount(c, 0);
+            }
+        }
+
+        public Dictionary<MTGColor, int> GetManaRemaining()
+        {
+            Dictionary<MTGColor, int> result = new Dictionary<MTGColor, int>();
+            foreach(MTGColor c in ManaTypesList)
+            {
+                result[c] = amount.GetAmount(c);
+            }
+            return result;
+        }
+
+        public static MTGColor[] ManaTypesList = { MTGColor.ColorlessMana, MTGColor.White, MTGColor.Blue, MTGColor.Black, MTGColor.Red, MTGColor.Green };
 
         public void Draw(SpriteBatch spriteBatch, SpriteFont font, Vector2 position)
         {
             Point currentPos = new Point((int)position.X, (int)position.Y);
-            foreach(MTGColor c in ColorsList)
+            foreach(MTGColor c in ManaTypesList)
             {
                 int amount = Get(c);
                 if (amount > 0)

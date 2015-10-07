@@ -8,12 +8,14 @@ namespace MagicTheGathering
     [Flags]
     public enum MTGColor
     {
-        Colorless = 0,
-        White = 1,
-        Blue = 2,
-        Black = 4,
-        Red = 8,
-        Green = 16,
-        AllColors = White+Blue+Black+Red+Green,
+        NoColor = 0,
+        ColorlessMana = 1,
+        White = 2,
+        Blue = 4,
+        Black = 8,
+        Red = 16,
+        Green = 32,
+        AllColors = White + Blue + Black + Red + Green,
+        GenericMana = White + Blue + Black + Red + Green + ColorlessMana,
     };
 }
