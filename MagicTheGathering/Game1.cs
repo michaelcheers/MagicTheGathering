@@ -18,6 +18,7 @@ namespace MagicTheGathering
         SpriteBatch spriteBatch;
         internal static Dictionary<string, MagicCard> cards = new Dictionary<string, MagicCard>();
         Player player;
+        Player player2;
         JSONTable table;
         MagicGame host;
         MagicUI ui;
@@ -60,7 +61,7 @@ namespace MagicTheGathering
                 {
                     type |= (MagicCardType)Enum.Parse(typeof(MagicCardType), item);
                 }
-                cards.Add(card, new MagicCard(card, GraphicsDevice, type, cardTable.getArray("subtypes").toStringArray(), new Ability[0], new Cost(new List<CostComponent>() { ManaPaymentComponent.Parse(cardTable.getString("manaCost", "0")) })));
+                cards.Add(card, new MagicCard(card, GraphicsDevice, type, cardTable.getArray("subtypes").toStringArray(), new Ability[0], new Cost(new List<CostComponent>() { ManaPaymentComponent.Parse(cardTable.getString("manaCost", "0")) }), cardTable.getInt("power", 0), cardTable.getInt("toughness", 0)));
                 return cards[card];
             }
         }
@@ -76,8 +77,11 @@ namespace MagicTheGathering
 
             List<MagicCard> list = new List<MagicCard>() {LoadCard("Fusion Elemental", GraphicsDevice, table), LoadCard("Memnite", GraphicsDevice, table), LoadCard("Catacomb Slug", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Swamp", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Island", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Plains", GraphicsDevice, table), LoadCard("Island", GraphicsDevice, table), LoadCard("Swamp", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Plains", GraphicsDevice, table), LoadCard("Island", GraphicsDevice, table), LoadCard("Mountain", GraphicsDevice, table), LoadCard("Forest", GraphicsDevice, table) };
             list.Shuffle();
+            List<MagicCard> list2 = new List<MagicCard>(list);
             Deck deck = new NormalDeck(list);
+            Deck deck2 = new NormalDeck(list2);
             player = new TestPlayer(host, deck);
+            player2 = new DefaultPlayer(host, deck2);
             ui = new MagicUI(player, Content, GraphicsDevice);
             host.ReadyGameForStart();
             // TODO: use this.Content to load your game content here

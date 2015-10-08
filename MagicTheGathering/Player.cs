@@ -21,23 +21,66 @@ namespace MagicTheGathering
             manaPool = new ManaPool();
         }
 
+        protected internal void DeclareAttacker (BattlefieldCardReference reference, Player toAttack)
+        {
+            if (reference.controller != this)
+                return;
+            attacking.Add(new KeyValuePair<BattlefieldCardReference, Player>(reference, toAttack));
+        }
+
+        protected internal void WithDrawBlocker (BattlefieldCardReference reference)
+        {
+            for (int n = 0; n < attacking.Count; n++)
+            {
+                var item = attacking[n];
+                if (item.Key == reference)
+                    attacking.RemoveAt(n);
+            }
+        }
+
         protected virtual void GameStart ()
         {
 
         }
 
+        internal List<KeyValuePair<BattlefieldCardReference, Player>> attacking = new List<KeyValuePair<BattlefieldCardReference, Player>>();
+
         internal void ContinueToNextPhase ()
         {
             manaPool.Empty();
-            landsPlayed = 0;
-            foreach (var item in battlefield)
+
+            switch (game.currentPhase)
             {
-                item.isUntapped = true;
+                case Phase.Main:
+                    break;
+                case Phase.Attack:
+                    {
+                        foreach (var item in attacking)
+                        {
+                            item.Value.lifeTotal -= item.Key.Power;
+                        }
+                        attacking.Clear();
+                        break;
+                    }
+                case Phase.Main2:
+                    {
+                        landsPlayed = 0;
+                        foreach (var item in battlefield)
+                        {
+                            item.isUntapped = true;
+                        }
+                        var card = deck.DrawTopCard();
+                        if (card == null)
+                            Environment.Exit(0);
+                        hand.Add(new HandCardReference(card));
+                        break;
+                    }
+                default:
+                    break;
             }
-            var card = deck.DrawTopCard();
-            if (card == null)
-                Environment.Exit(0);
-            hand.Add(new HandCardReference(card));
+
+            game.currentPhase++;
+
         }
 
         internal void Play (HandCardReference card)

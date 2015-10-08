@@ -7,6 +7,7 @@ namespace MagicTheGathering
     {
         internal List<Player> players = new List<Player>();
         public event Action StartGame;
+        internal Phase currentPhase = 0;
         internal void Add (Player player)
         {
             players.Add(player);

@@ -12,9 +12,11 @@ namespace MagicTheGathering
         private readonly MagicCardType type;
         public readonly Ability[] abilities;
         public readonly string[] subtypes;
+        internal readonly int power;
+        internal readonly int toughness;
         public readonly Cost cost;
         
-        public MagicCard (string name, GraphicsDevice GraphicsDevice, MagicCardType type, string[] subtypes, Ability[] abilities, Cost cost)
+        public MagicCard (string name, GraphicsDevice GraphicsDevice, MagicCardType type, string[] subtypes, Ability[] abilities, Cost cost, int power, int toughness)
         {
             this.cost = cost;
             this.type = type;
@@ -22,6 +24,8 @@ namespace MagicTheGathering
             texture = Texture2D.FromStream(GraphicsDevice, File.OpenRead("Cards/" + name + ".jpg"));
             this.subtypes = subtypes;
             this.abilities = abilities;
+            this.power = power;
+            this.toughness = toughness;
         }
 
         public bool IsSubtype (string subtype)
