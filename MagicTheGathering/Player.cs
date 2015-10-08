@@ -58,6 +58,7 @@ namespace MagicTheGathering
                         foreach (var item in attacking)
                         {
                             item.Value.lifeTotal -= item.Key.Power;
+                            item.Key.isTapped = true;
                         }
                         attacking.Clear();
                         break;
