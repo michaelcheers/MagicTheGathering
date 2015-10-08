@@ -61,7 +61,22 @@ namespace MagicTheGathering
                 {
                     type |= (MagicCardType)Enum.Parse(typeof(MagicCardType), item);
                 }
-                cards.Add(card, new MagicCard(card, GraphicsDevice, type, cardTable.getArray("subtypes").toStringArray(), new Ability[0], new Cost(new List<CostComponent>() { ManaPaymentComponent.Parse(cardTable.getString("manaCost", "0")) }), cardTable.getInt("power", 0), cardTable.getInt("toughness", 0)));
+
+                cards.Add
+                (
+                    card,
+                    new MagicCard
+                    (
+                        card,
+                        GraphicsDevice,
+                        type,
+                        cardTable.getArray("subtypes").toStringArray(),
+                        new Ability[0],
+                        new Cost(new List<CostComponent>() { ManaPaymentComponent.Parse(cardTable.getString("manaCost", "0")) }),
+                        int.Parse(cardTable.getString("power", "0")),
+                        int.Parse(cardTable.getString("toughness", "0"))
+                    )
+                );
                 return cards[card];
             }
         }
@@ -75,7 +90,7 @@ namespace MagicTheGathering
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            List<MagicCard> list = new List<MagicCard>() {LoadCard("Fusion Elemental", GraphicsDevice, table), LoadCard("Memnite", GraphicsDevice, table), LoadCard("Catacomb Slug", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Swamp", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Island", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Plains", GraphicsDevice, table), LoadCard("Island", GraphicsDevice, table), LoadCard("Swamp", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Plains", GraphicsDevice, table), LoadCard("Island", GraphicsDevice, table), LoadCard("Mountain", GraphicsDevice, table), LoadCard("Forest", GraphicsDevice, table) };
+            List<MagicCard> list = new List<MagicCard>() {/*LoadCard("Fusion Elemental", GraphicsDevice, table), LoadCard("Memnite", GraphicsDevice, table),*/ LoadCard("Catacomb Slug", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Swamp", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Island", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Plains", GraphicsDevice, table), LoadCard("Island", GraphicsDevice, table), LoadCard("Swamp", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Plains", GraphicsDevice, table), LoadCard("Island", GraphicsDevice, table), LoadCard("Mountain", GraphicsDevice, table), LoadCard("Forest", GraphicsDevice, table) };
             list.Shuffle();
             List<MagicCard> list2 = new List<MagicCard>(list);
             Deck deck = new NormalDeck(list);

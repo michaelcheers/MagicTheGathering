@@ -27,6 +27,7 @@ namespace MagicTheGatheringUI
             int currentState;
             const int animDuration = 15;
             int animCurrentFrame;
+            bool fakeTapped = false;
 
             public bool Active(int state) => currentState == state;
 
@@ -38,13 +39,9 @@ namespace MagicTheGatheringUI
 
             public void SetGameState(int newState) => currentState = newState;
 
-            public void SetDesiredPos(Rectangle newTargetRect)
+            public void SetDesiredPos(Rectangle newTargetRect, bool showTapped)
             {
-                float newTargetRotation = 0;
-                if (card is BattlefieldCardReference && ((BattlefieldCardReference)card).isTapped)
-                {
-                    newTargetRotation = (float)(Math.PI / 2);
-                }
+                float newTargetRotation = showTapped? (float)(Math.PI / 2): 0;
 
                 if (animTargetRect != newTargetRect || animTargetRotation != newTargetRotation)
                 {
@@ -273,11 +270,27 @@ namespace MagicTheGatheringUI
                 }
                 else if (hoveredCard.card is BattlefieldCardReference)
                 {
+                    bool activatedAnAbility = false;
                     foreach(AbilityInstance a in hoveredCard.card.Abilities)
                     {
                         if(a.ability is ActivatedAbility)
                         {
                             ((ActivatedAbility)a.ability).Activate((BattlefieldCardReference)hoveredCard.card);
+                            activatedAnAbility = true;
+                            break;
+                        }
+                    }
+
+                    if(!activatedAnAbility && hoveredCard.card.IsCreature && viewingPlayer.game.currentPhase == Phase.Attack)
+                    {
+                        BattlefieldCardReference battlefieldCard = (BattlefieldCardReference)hoveredCard.card;
+                        if (viewingPlayer.IsAttacking(battlefieldCard))
+                        {
+                            viewingPlayer.WithdrawAttacker(battlefieldCard);
+                        }
+                        else
+                        {
+                            viewingPlayer.DeclareAttacker(battlefieldCard, GetOpponent());
                         }
                     }
 //                    BattlefieldCardReference cardRef = ((BattlefieldCardReference)hoveredCard.card);
@@ -303,13 +316,22 @@ namespace MagicTheGatheringUI
                 button.Draw(spriteBatch);
             }
 
+            string phaseText = "";
+            switch(viewingPlayer.game.currentPhase)
+            {
+                case Phase.Main: phaseText = "Precombat Main"; break;
+                case Phase.Attack: phaseText = "Combat"; break;
+                case Phase.Main2: phaseText = "Postcombat Main"; break;
+            }
+            spriteBatch.DrawString(font, phaseText, new Vector2(100, 0), Color.White);
+
             viewingPlayer.manaPool.Draw(spriteBatch, font, new Vector2(200,20));
             viewingPlayer.DrawInfo(spriteBatch, font, new Vector2(20,20));
 
             Player opponent = GetOpponent();
             if(opponent != null)
             {
-                opponent.DrawInfo(spriteBatch, font, new Vector2(400, 20));
+                opponent.DrawInfo(spriteBatch, font, new Vector2(640, 20));
             }
         }
 
@@ -319,7 +341,23 @@ namespace MagicTheGatheringUI
             foreach (CardReference c in cards)
             {
                 Rectangle rect = new Rectangle((int)(start.X + (cardOffsetX * cardIdx)), (int)start.Y, (int)cardSize.X, (int)cardSize.Y);
-                gameStateRepresentation[c.cardID].SetDesiredPos(new Rectangle((int)(start.X + (cardOffsetX * cardIdx)), (int)start.Y, (int)cardSize.X, (int)cardSize.Y));
+                bool showTapped = false;
+
+                if (c is BattlefieldCardReference)
+                {
+                    BattlefieldCardReference permanent = (BattlefieldCardReference)c;
+                    showTapped = permanent.isTapped;
+
+                    if(!showTapped && viewingPlayer.game.currentPhase == Phase.Attack)
+                    {
+                        if(c.IsCreature && viewingPlayer.IsAttacking(permanent)) //FIXME: vigilance
+                        {
+                            showTapped = true;
+                        }
+                    }
+                }
+
+                gameStateRepresentation[c.cardID].SetDesiredPos(new Rectangle((int)(start.X + (cardOffsetX * cardIdx)), (int)start.Y, (int)cardSize.X, (int)cardSize.Y), showTapped);
                 cardIdx++;
             }
         }
@@ -411,15 +449,6 @@ namespace MagicTheGatheringUI
                 LayOutArea(creatures, new Rectangle(bounds.Left, mainRowY, bounds.Width, (int)battlefieldCardSize.Y), battlefieldCardSize, battlefieldSpacing.X);
                 LayOutArea(lands, new Rectangle(bounds.Left, landRowY, bounds.Width, (int)battlefieldCardSize.Y), battlefieldCardSize, battlefieldSpacing.X);
             }
-
-/*                Vector2 battlefieldStartPos = new Vector2(bounds.Left + (bounds.Width - totalWidth) * 0.5f, bounds.Top);
-            int cardIdx = 0;
-            foreach (CardReference c in permanents)
-            {
-                Rectangle rect = new Rectangle((int)(battlefieldStartPos.X + (handSpacing * handIdx)), (int)handStartPos.Y, (int)handCardSize.X, (int)handCardSize.Y);
-                gameStateRepresentation[c.cardID].SetDesiredPos(new Rectangle((int)(handStartPos.X + (handSpacing * handIdx)), (int)handStartPos.Y, (int)handCardSize.X, (int)handCardSize.Y));
-                handIdx++;
-            }*/
         }
 
         public static void DrawCardBack(SpriteBatch spriteBatch, Rectangle rect)

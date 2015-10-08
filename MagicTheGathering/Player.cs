@@ -21,6 +21,16 @@ namespace MagicTheGathering
             manaPool = new ManaPool();
         }
 
+        public bool IsAttacking(BattlefieldCardReference reference)
+        {
+            foreach(KeyValuePair<BattlefieldCardReference, Player> kv in attacking)
+            {
+                if (kv.Key == reference)
+                    return true;
+            }
+            return false;
+        }
+
         protected internal void DeclareAttacker (BattlefieldCardReference reference, Player toAttack)
         {
             if (reference.controller != this)
@@ -28,7 +38,7 @@ namespace MagicTheGathering
             attacking.Add(new KeyValuePair<BattlefieldCardReference, Player>(reference, toAttack));
         }
 
-        protected internal void WithDrawBlocker (BattlefieldCardReference reference)
+        protected internal void WithdrawAttacker (BattlefieldCardReference reference)
         {
             for (int n = 0; n < attacking.Count; n++)
             {
@@ -44,6 +54,21 @@ namespace MagicTheGathering
         }
 
         internal List<KeyValuePair<BattlefieldCardReference, Player>> attacking = new List<KeyValuePair<BattlefieldCardReference, Player>>();
+
+        internal void ContinueToNextTurn()
+        {
+            game.currentPhase = Phase.Main; // should be Untap
+
+            landsPlayed = 0;
+            foreach (var item in battlefield)
+            {
+                item.isUntapped = true;
+            }
+            var card = deck.DrawTopCard();
+            if (card == null)
+                Environment.Exit(0);
+            hand.Add(new HandCardReference(card));
+        }
 
         internal void ContinueToNextPhase ()
         {
@@ -64,24 +89,19 @@ namespace MagicTheGathering
                         break;
                     }
                 case Phase.Main2:
-                    {
-                        landsPlayed = 0;
-                        foreach (var item in battlefield)
-                        {
-                            item.isUntapped = true;
-                        }
-                        var card = deck.DrawTopCard();
-                        if (card == null)
-                            Environment.Exit(0);
-                        hand.Add(new HandCardReference(card));
-                        break;
-                    }
+                    break;
                 default:
                     break;
             }
 
-            game.currentPhase++;
-
+            if (game.currentPhase == Phase.Main2) // should be Cleanup
+            {
+                ContinueToNextTurn();
+            }
+            else
+            {
+                game.currentPhase++;
+            }
         }
 
         internal void Play (HandCardReference card)
