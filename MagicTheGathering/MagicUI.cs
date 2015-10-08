@@ -255,7 +255,7 @@ namespace MagicTheGatheringUI
                         // FIXME: components should have a simple "pay me" function
                         if (component is ManaPaymentComponent)
                         {
-                            if(!((ManaPaymentComponent)component).TryPayWith(viewingPlayer.manaPool))
+                            if(!((ManaPaymentComponent)component).CanBePaidWith(viewingPlayer.manaPool))
                             {
                                 paymentFailed = true;
                                 break;

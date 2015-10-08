@@ -5,6 +5,7 @@ using System.Text;
 
 namespace MagicTheGathering
 {
+    [Flags]
     enum MagicCardType
     {
         Creature = 1,

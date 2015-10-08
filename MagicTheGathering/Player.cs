@@ -44,7 +44,7 @@ namespace MagicTheGathering
                 // FIXME: costs should have a simple "try to pay this" function!
                 if (component is ManaPaymentComponent)
                 {
-                    if (!((ManaPaymentComponent)component).TryPayWith(manaPool))
+                     if (!((ManaPaymentComponent)component).TryPayWith(manaPool))
                     {
                         return;
                     }
@@ -128,10 +128,16 @@ namespace MagicTheGathering
             }
         }
 
+        int SortBattleField (BattlefieldCardReference a, BattlefieldCardReference b)
+        {
+            return a.Card.Type.CompareTo(b.Card.Type);
+        }
+
         public List<BattlefieldCardReference> Battlefield
         {
             get
             {
+                battlefield.Sort(SortBattleField);
                 return battlefield;
             }
 

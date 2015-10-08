@@ -55,7 +55,7 @@ namespace MagicTheGathering
             else
             {
                 JSONTable cardTable = table.getJSON(card);
-                MagicCardType type = (MagicCardType)0;
+                MagicCardType type = 0;
                 foreach (var item in cardTable.getArray("types").toStringArray())
                 {
                     type |= (MagicCardType)Enum.Parse(typeof(MagicCardType), item);
@@ -74,7 +74,7 @@ namespace MagicTheGathering
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            List<MagicCard> list = new List<MagicCard>() {LoadCard("Memnite", GraphicsDevice, table), LoadCard("Catacomb Slug", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Swamp", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Island", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Plains", GraphicsDevice, table), LoadCard("Island", GraphicsDevice, table), LoadCard("Swamp", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Plains", GraphicsDevice, table), LoadCard("Island", GraphicsDevice, table), LoadCard("Mountain", GraphicsDevice, table), LoadCard("Forest", GraphicsDevice, table) };
+            List<MagicCard> list = new List<MagicCard>() {LoadCard("Fusion Elemental", GraphicsDevice, table), LoadCard("Memnite", GraphicsDevice, table), LoadCard("Catacomb Slug", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Swamp", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Island", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Plains", GraphicsDevice, table), LoadCard("Island", GraphicsDevice, table), LoadCard("Swamp", GraphicsDevice, table), LoadCard("Air Elemental", GraphicsDevice, table), LoadCard("Plains", GraphicsDevice, table), LoadCard("Island", GraphicsDevice, table), LoadCard("Mountain", GraphicsDevice, table), LoadCard("Forest", GraphicsDevice, table) };
             list.Shuffle();
             Deck deck = new NormalDeck(list);
             player = new TestPlayer(host, deck);
