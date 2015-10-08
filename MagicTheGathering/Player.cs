@@ -44,7 +44,7 @@ namespace MagicTheGathering
                 // FIXME: costs should have a simple "try to pay this" function!
                 if (component is ManaPaymentComponent)
                 {
-                     if (!((ManaPaymentComponent)component).TryPayWith(manaPool))
+                    if (!((ManaPaymentComponent)component).TryPayWith(manaPool))
                     {
                         return;
                     }

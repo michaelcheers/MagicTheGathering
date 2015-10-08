@@ -36,7 +36,8 @@ namespace MagicTheGathering
 
         public List<AbilityInstance> Abilities;
 
-
+        public bool IsCreature { get { return (card.Type & MagicCardType.Creature) != 0; } }
+        public bool IsLand { get { return (card.Type & MagicCardType.Land) != 0; } }
 
         public abstract CardLocation Location
         {

@@ -249,24 +249,7 @@ namespace MagicTheGatheringUI
             {
                 if (hoveredCard.card is HandCardReference)
                 {
-                    bool paymentFailed = false;
-                    foreach (CostComponent component in hoveredCard.card.card.cost.Payment)
-                    {
-                        // FIXME: components should have a simple "pay me" function
-                        if (component is ManaPaymentComponent)
-                        {
-                            if(!((ManaPaymentComponent)component).CanBePaidWith(viewingPlayer.manaPool))
-                            {
-                                paymentFailed = true;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (!paymentFailed)
-                    {
-                        viewingPlayer.Play((HandCardReference)hoveredCard.card);
-                    }
+                    viewingPlayer.Play((HandCardReference)hoveredCard.card);
                 }
                 else if (hoveredCard.card is BattlefieldCardReference)
                 {
@@ -330,16 +313,16 @@ namespace MagicTheGatheringUI
             List<CardReference> lands = new List<CardReference>();
             List<CardReference> creatures = new List<CardReference>();
             List<CardReference> miscPermanents = new List<CardReference>();
-            /*            foreach (CardReference c in permanents)
-                        {
-                            if(c.isCreature)
-                                creatures.Add(c);
-                            else if(c.isLand)
-                                lands.Add(c);
-                            else
-                                miscPermanents.Add(c);
-                        }*/
-            lands.AddRange(permanents);
+
+            foreach (CardReference c in permanents)
+            {
+                if(c.IsCreature)
+                    creatures.Add(c);
+                else if(c.IsLand)
+                    lands.Add(c);
+                else
+                    miscPermanents.Add(c);
+            }
 
             float battlefieldScale = 1.0f;
             float battlefieldNeededHeight = battlefieldCardSize.Y * 2 + battlefieldSpacing.Y;
@@ -348,6 +331,7 @@ namespace MagicTheGatheringUI
                 battlefieldScale = bounds.Height / battlefieldNeededHeight;
             }
 
+            LayOutArea(new Rectangle(bounds.Left, (int)(bounds.Bottom - (battlefieldSpacing.Y+battlefieldCardSize.Y*2)), bounds.Width, (int)battlefieldCardSize.Y), creatures, battlefieldCardSize, battlefieldSpacing.X);
             LayOutArea(new Rectangle(bounds.Left, (int)(bounds.Bottom - battlefieldCardSize.Y), bounds.Width, (int)battlefieldCardSize.Y), lands, battlefieldCardSize, battlefieldSpacing.X);
 
 /*                Vector2 battlefieldStartPos = new Vector2(bounds.Left + (bounds.Width - totalWidth) * 0.5f, bounds.Top);
