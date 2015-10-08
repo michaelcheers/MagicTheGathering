@@ -117,6 +117,7 @@ namespace MagicTheGatheringUI
         UIButtonStyleSet basicButtonStyle;
         SpriteFont font;
 
+        static Texture2D cardBack;
         static Texture2D symbolsTexture;
         static Dictionary<MTGColor, Rectangle> colorSymbolRects = new Dictionary<MTGColor, Rectangle>()
         {
@@ -171,6 +172,7 @@ namespace MagicTheGatheringUI
             Texture2D hoverButtonTexture = Texture2D.FromStream(device, File.OpenRead("Content/button3d_hover.png"));
             Texture2D pressButtonTexture = Texture2D.FromStream(device, File.OpenRead("Content/button3d_pressed.png"));
 
+            cardBack = Texture2D.FromStream(device, File.OpenRead("Content/card-back.jpg"));
             symbolsTexture = Texture2D.FromStream(device, File.OpenRead("Content/mtgsymbols.png"));
 
             basicButtonStyle = new UIButtonStyleSet(
@@ -179,7 +181,7 @@ namespace MagicTheGatheringUI
                 new UIButtonStyle(font, Color.Yellow, pressButtonTexture, Color.White, new Vector2(0,1))
             );
 
-            buttons = new List<UIButton>() { new UIButton("Continue", new Rectangle(10, 10, 100, 50), basicButtonStyle, OnPressContinue) };
+            buttons = new List<UIButton>() { new UIButton("Continue", new Rectangle(690, 420, 100, 50), basicButtonStyle, OnPressContinue) };
         }
 
         public void OnPressContinue() => viewingPlayer.ContinueToNextPhase();
@@ -215,14 +217,32 @@ namespace MagicTheGatheringUI
             }
         }
 
+        Player GetOpponent()
+        {
+            foreach (Player opponent in viewingPlayer.game.players)
+            {
+                if (opponent != viewingPlayer)
+                {
+                    return opponent;
+                }
+            }
+            return null;
+        }
+
         public void Update(Input.InputState inputState, Rectangle screenSize)
         {
             // for now, let's refresh the state every frame
             NewGameState();
 
-            LayOutArea(new Rectangle(0, screenSize.Height - 100, screenSize.Width, 100), viewingPlayer.Hand, handCardSize, 0);
+            LayOutArea(new Rectangle(100, screenSize.Height - 100, screenSize.Width - 200, 100), viewingPlayer.Hand, handCardSize, 0);
             int battlefieldHeight = (screenSize.Height - 130) / 2;
-            LayOutBattlefield(new Rectangle(0, battlefieldHeight, screenSize.Width, battlefieldHeight), viewingPlayer.Battlefield);
+            LayOutBattlefield(new Rectangle(0, battlefieldHeight, screenSize.Width, battlefieldHeight), viewingPlayer.Battlefield, false);
+
+            Player opponent = GetOpponent();
+            if(opponent != null)
+            {
+                LayOutBattlefield(new Rectangle(0, 0, screenSize.Width, battlefieldHeight), opponent.Battlefield, true);
+            }
 
             Vector2 mousePos = inputState.MousePos;
             if (hoveredCard != null)
@@ -284,6 +304,13 @@ namespace MagicTheGatheringUI
             }
 
             viewingPlayer.manaPool.Draw(spriteBatch, font, new Vector2(200,20));
+            viewingPlayer.DrawInfo(spriteBatch, font, new Vector2(20,20));
+
+            Player opponent = GetOpponent();
+            if(opponent != null)
+            {
+                opponent.DrawInfo(spriteBatch, font, new Vector2(400, 20));
+            }
         }
 
         void LayOutArea(Rectangle bounds, IEnumerable<CardReference> cards, Vector2 cardSize, float cardSpacing)
@@ -308,7 +335,7 @@ namespace MagicTheGatheringUI
             }
         }
 
-        void LayOutBattlefield(Rectangle bounds, IEnumerable<CardReference> permanents)
+        void LayOutBattlefield(Rectangle bounds, IEnumerable<CardReference> permanents, bool isOpponent)
         {
             List<CardReference> lands = new List<CardReference>();
             List<CardReference> creatures = new List<CardReference>();
@@ -331,6 +358,9 @@ namespace MagicTheGatheringUI
                 battlefieldScale = bounds.Height / battlefieldNeededHeight;
             }
 
+            float landRowY = isOpponent ? bounds.Top : bounds.Bottom - battlefieldCardSize.Y;
+            float mainRowY = isOpponent ? bounds.Top + (battlefieldSpacing.Y + battlefieldCardSize.Y * 2) : bounds.Bottom - (battlefieldSpacing.Y + battlefieldCardSize.Y * 2);
+
             LayOutArea(new Rectangle(bounds.Left, (int)(bounds.Bottom - (battlefieldSpacing.Y+battlefieldCardSize.Y*2)), bounds.Width, (int)battlefieldCardSize.Y), creatures, battlefieldCardSize, battlefieldSpacing.X);
             LayOutArea(new Rectangle(bounds.Left, (int)(bounds.Bottom - battlefieldCardSize.Y), bounds.Width, (int)battlefieldCardSize.Y), lands, battlefieldCardSize, battlefieldSpacing.X);
 
@@ -342,6 +372,11 @@ namespace MagicTheGatheringUI
                 gameStateRepresentation[c.cardID].SetDesiredPos(new Rectangle((int)(handStartPos.X + (handSpacing * handIdx)), (int)handStartPos.Y, (int)handCardSize.X, (int)handCardSize.Y));
                 handIdx++;
             }*/
+        }
+
+        public static void DrawCardBack(SpriteBatch spriteBatch, Rectangle rect)
+        {
+            spriteBatch.Draw(cardBack, rect, Color.White);
         }
 
         public static void DrawColorSymbol(SpriteBatch spriteBatch, MTGColor color, Rectangle rect)

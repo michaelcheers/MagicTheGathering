@@ -1,4 +1,7 @@
-﻿using System;
+﻿using MagicTheGatheringUI;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -147,5 +150,11 @@ namespace MagicTheGathering
             }
         }
 
+        public void DrawInfo(SpriteBatch spriteBatch, SpriteFont font, Vector2 position)
+        {
+            spriteBatch.DrawString(font, "Life: " + lifeTotal, position, Color.White);
+            MagicUI.DrawCardBack(spriteBatch, new Rectangle((int)position.X, (int)position.Y + 20, 20,30));
+            spriteBatch.DrawString(font, "" + deck.Length, new Vector2(position.X+25, position.Y+25), Color.White);
+        }
     }
 }

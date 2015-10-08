@@ -5,7 +5,7 @@ namespace MagicTheGathering
 {
     public class MagicGame
     {
-        List<Player> players = new List<Player>();
+        internal List<Player> players = new List<Player>();
         public event Action StartGame;
         internal void Add (Player player)
         {
