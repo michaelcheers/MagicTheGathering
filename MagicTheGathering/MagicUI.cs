@@ -234,14 +234,14 @@ namespace MagicTheGatheringUI
             // for now, let's refresh the state every frame
             NewGameState();
 
-            LayOutArea(new Rectangle(100, screenSize.Height - 100, screenSize.Width - 200, 100), viewingPlayer.Hand, handCardSize, 0);
+            LayOutArea(viewingPlayer.Hand, new Rectangle(100, screenSize.Height - 100, screenSize.Width - 200, 100), handCardSize, 0);
             int battlefieldHeight = (screenSize.Height - 130) / 2;
-            LayOutBattlefield(new Rectangle(0, battlefieldHeight, screenSize.Width, battlefieldHeight), viewingPlayer.Battlefield, false);
+            LayOutBattlefield(new Rectangle(10, battlefieldHeight, screenSize.Width-20, battlefieldHeight), viewingPlayer.Battlefield, false);
 
             Player opponent = GetOpponent();
             if(opponent != null)
             {
-                LayOutBattlefield(new Rectangle(0, 0, screenSize.Width, battlefieldHeight), opponent.Battlefield, true);
+                LayOutBattlefield(new Rectangle(10, 0, screenSize.Width-20, battlefieldHeight), opponent.Battlefield, true);
             }
 
             Vector2 mousePos = inputState.MousePos;
@@ -313,7 +313,18 @@ namespace MagicTheGatheringUI
             }
         }
 
-        void LayOutArea(Rectangle bounds, IEnumerable<CardReference> cards, Vector2 cardSize, float cardSpacing)
+        void LayOutCardFan(IEnumerable<CardReference> cards, Vector2 start, Vector2 cardSize, float cardOffsetX)
+        {
+            int cardIdx = 0;
+            foreach (CardReference c in cards)
+            {
+                Rectangle rect = new Rectangle((int)(start.X + (cardOffsetX * cardIdx)), (int)start.Y, (int)cardSize.X, (int)cardSize.Y);
+                gameStateRepresentation[c.cardID].SetDesiredPos(new Rectangle((int)(start.X + (cardOffsetX * cardIdx)), (int)start.Y, (int)cardSize.X, (int)cardSize.Y));
+                cardIdx++;
+            }
+        }
+
+        void LayOutArea(IEnumerable<CardReference> cards, Rectangle bounds, Vector2 cardSize, float cardSpacing)
         {
             float actualSpacing = cardSize.X + cardSpacing;
             int numCards = cards.Count();
@@ -326,13 +337,32 @@ namespace MagicTheGatheringUI
             float totalWidth = cardSize.X + actualSpacing * (numCards - 1);
 
             Vector2 layoutStartPos = new Vector2(bounds.Left + (bounds.Width - totalWidth) * 0.5f, bounds.Top);
-            int cardIdx = 0;
-            foreach (CardReference c in cards)
+            LayOutCardFan(cards, layoutStartPos, cardSize, actualSpacing);
+        }
+
+        void LayOutDualArea(IEnumerable<CardReference> cardsLeft, IEnumerable<CardReference> cardsRight, Rectangle bounds, Vector2 cardSize, float cardSpacing)
+        {
+            float actualSpacing = cardSize.X + cardSpacing;
+            int numCardsLeft = cardsLeft.Count();
+            int numCardsRight = cardsRight.Count();
+            int totalCards = numCardsLeft + numCardsRight;
+            int areaSpacingX = 10;
+            if (totalCards > 2)
             {
-                Rectangle rect = new Rectangle((int)(layoutStartPos.X + (actualSpacing * cardIdx)), (int)layoutStartPos.Y, (int)cardSize.X, (int)cardSize.Y);
-                gameStateRepresentation[c.cardID].SetDesiredPos(new Rectangle((int)(layoutStartPos.X + (actualSpacing * cardIdx)), (int)layoutStartPos.Y, (int)cardSize.X, (int)cardSize.Y));
-                cardIdx++;
+                float overlapSpacing = (bounds.Width - areaSpacingX - cardSize.X*2) / (totalCards - 2);
+                if (actualSpacing > overlapSpacing)
+                    actualSpacing = overlapSpacing;
             }
+            float cardsWidthLeft = cardSize.X + actualSpacing * (numCardsLeft - 1);
+            float cardsWidthRight = cardSize.X + actualSpacing * (numCardsRight - 1);
+
+            float leftAreaWidth = bounds.Width - cardsWidthRight;
+
+            Vector2 leftLayoutStartPos = new Vector2(bounds.Left + (leftAreaWidth - cardsWidthLeft) * 0.5f, bounds.Top);
+            LayOutCardFan(cardsLeft, leftLayoutStartPos, cardSize, actualSpacing);
+
+            Vector2 rightLayoutStartPos = new Vector2(bounds.Right - cardsWidthRight, bounds.Top);
+            LayOutCardFan(cardsRight, rightLayoutStartPos, cardSize, actualSpacing);
         }
 
         void LayOutBattlefield(Rectangle bounds, IEnumerable<CardReference> permanents, bool isOpponent)
@@ -358,11 +388,29 @@ namespace MagicTheGatheringUI
                 battlefieldScale = bounds.Height / battlefieldNeededHeight;
             }
 
-            float landRowY = isOpponent ? bounds.Top : bounds.Bottom - battlefieldCardSize.Y;
-            float mainRowY = isOpponent ? bounds.Top + (battlefieldSpacing.Y + battlefieldCardSize.Y * 2) : bounds.Bottom - (battlefieldSpacing.Y + battlefieldCardSize.Y * 2);
+            int landRowY = isOpponent ? bounds.Top : bounds.Bottom - (int)battlefieldCardSize.Y;
+            int mainRowY = isOpponent ? bounds.Top + (int)(battlefieldSpacing.Y + battlefieldCardSize.Y * 2) : bounds.Bottom - (int)(battlefieldSpacing.Y + battlefieldCardSize.Y * 2);
 
-            LayOutArea(new Rectangle(bounds.Left, (int)(bounds.Bottom - (battlefieldSpacing.Y+battlefieldCardSize.Y*2)), bounds.Width, (int)battlefieldCardSize.Y), creatures, battlefieldCardSize, battlefieldSpacing.X);
-            LayOutArea(new Rectangle(bounds.Left, (int)(bounds.Bottom - battlefieldCardSize.Y), bounds.Width, (int)battlefieldCardSize.Y), lands, battlefieldCardSize, battlefieldSpacing.X);
+            if (miscPermanents.Count > 0)
+            {
+                if (lands.Count > creatures.Count)
+                {
+                    // misc permanents on the creatures row
+                    LayOutDualArea(creatures, miscPermanents, new Rectangle(bounds.Left, mainRowY, bounds.Width, (int)battlefieldCardSize.Y), battlefieldCardSize, battlefieldSpacing.X);
+                    LayOutArea(lands, new Rectangle(bounds.Left, landRowY, bounds.Width, (int)battlefieldCardSize.Y), battlefieldCardSize, battlefieldSpacing.X);
+                }
+                else
+                {
+                    // misc permanents on the lands row
+                    LayOutArea(creatures, new Rectangle(bounds.Left, mainRowY, bounds.Width, (int)battlefieldCardSize.Y), battlefieldCardSize, battlefieldSpacing.X);
+                    LayOutDualArea(lands, miscPermanents, new Rectangle(bounds.Left, landRowY, bounds.Width, (int)battlefieldCardSize.Y), battlefieldCardSize, battlefieldSpacing.X);
+                }
+            }
+            else
+            {
+                LayOutArea(creatures, new Rectangle(bounds.Left, mainRowY, bounds.Width, (int)battlefieldCardSize.Y), battlefieldCardSize, battlefieldSpacing.X);
+                LayOutArea(lands, new Rectangle(bounds.Left, landRowY, bounds.Width, (int)battlefieldCardSize.Y), battlefieldCardSize, battlefieldSpacing.X);
+            }
 
 /*                Vector2 battlefieldStartPos = new Vector2(bounds.Left + (bounds.Width - totalWidth) * 0.5f, bounds.Top);
             int cardIdx = 0;
