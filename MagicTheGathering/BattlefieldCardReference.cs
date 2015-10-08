@@ -75,8 +75,6 @@ namespace MagicTheGathering
 
         protected override void UpdateAbilities(List<AbilityInstance> abilities)
         {
-            if (card.Type == MagicCardType.Land)
-            {
                 if (card.IsSubtype("Plains"))
                 {
                     abilities.Add(new AbilityInstance(plainsAbility));
@@ -97,7 +95,6 @@ namespace MagicTheGathering
                 {
                     abilities.Add(new AbilityInstance(forestAbility));
                 }
-            }
         }
     }
 }

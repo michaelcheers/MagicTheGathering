@@ -118,35 +118,12 @@ namespace MagicTheGathering
                 }
             }
 
-            switch (card.Card.Type)
+            if (card.card.Type.HasFlag(MagicCardType.Land))
             {
-                case MagicCardType.Creature:
-                    break;
-                case MagicCardType.Artifact:
-                    break;
-                case MagicCardType.Basic:
-                    break;
-                case MagicCardType.Enchantment:
-                    break;
-                case MagicCardType.Instant:
-                    break;
-                case MagicCardType.Land:
-                    {
-                        if (LandsPlayed >= 1)
-                            return;
-                        landsPlayed++;
-                        break;
-                    }
-                case MagicCardType.Legendary:
-                    break;
-                case MagicCardType.Planeswalker:
-                    break;
-                case MagicCardType.Snow:
-                    break;
-                default:
-                    break;
+                if (LandsPlayed >= 1)
+                    return;
+                landsPlayed++;
             }
-            hand.Remove(card);
             battlefield.Add(new BattlefieldCardReference(card, this));
         }
 
