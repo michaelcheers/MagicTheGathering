@@ -101,6 +101,7 @@ namespace MagicTheGathering
         internal ManaPool manaPool;
         protected internal Deck deck;
         int landsPlayed = 0;
+        internal int lifeTotal = 20;
 
         protected int LandsPlayed
         {
@@ -128,16 +129,15 @@ namespace MagicTheGathering
             }
         }
 
-        int SortBattleField (BattlefieldCardReference a, BattlefieldCardReference b)
-        {
-            return a.Card.Type.CompareTo(b.Card.Type);
-        }
+        //int SortBattleField (BattlefieldCardReference a, BattlefieldCardReference b)
+        //{
+        //    return a.Card.Type.CompareTo(b.Card.Type);
+        //}
 
         public List<BattlefieldCardReference> Battlefield
         {
             get
             {
-                battlefield.Sort(SortBattleField);
                 return battlefield;
             }
 
