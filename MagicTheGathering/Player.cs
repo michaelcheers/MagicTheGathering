@@ -125,6 +125,7 @@ namespace MagicTheGathering
                 landsPlayed++;
             }
             battlefield.Add(new BattlefieldCardReference(card, this));
+            hand.Remove(card);
         }
 
         private void StartGame()
